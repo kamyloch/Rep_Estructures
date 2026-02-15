@@ -36,22 +36,24 @@ void omple (Estudiant &e){
 int main() {
     int option;
     string arr_options[] = {"Sortir", "Informar Estudiant"};
-    
+    int estudiats = 0;
+
+
     do{
         option = demana(arr_options);
-        int estudiats = 0;
-
+        
         switch (option){
             case 1:
                 cout << "adeu!" << endl;
                 break;
-            case 2: 
+            case 2: {
                 Estudiant e1;
                 estudiats++;
                 cout << "Estudiant " << estudiats<< endl;
                 omple(e1);
                 e1.print();
                 break;
+            }
         }
         
     }while (option != 1);
