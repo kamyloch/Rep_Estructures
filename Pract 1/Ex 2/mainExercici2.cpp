@@ -1,0 +1,60 @@
+#include <iostream>
+#include "Estudiant.h"
+using namespace std;
+
+int demana(string arr_options[]){
+    int option;
+    cout << "Hola que vols fer?" << endl;
+    do{
+    
+        //Mostra menú
+        for (int i = 1; i <= 2; i++)
+            cout << i << ". " << (arr_options[i-1])<< endl;
+
+        //Demana petició
+        cout << "Digues: ";
+        cin >> option;
+        if (option < 1 || 2 < option){
+            option  = -1;
+            cout << "No vàlid, torna a triar-ne..." << endl;
+        }
+
+    }while(option == -1);
+
+    return option;
+}
+
+void omple (Estudiant &e){
+    cout << "Nom: ";
+    cin >> e.nom;
+    cout << "Any de Naixement: ";
+    cin >> e.any;
+    cout << "Assignatures: ";
+    cin >> e.assignatures;
+}
+
+int main() {
+    int option;
+    string arr_options[] = {"Sortir", "Informar Estudiant"};
+    
+    do{
+        option = demana(arr_options);
+        int estudiats = 0;
+
+        switch (option){
+            case 1:
+                cout << "adeu!" << endl;
+                break;
+            case 2: 
+                Estudiant e1;
+                estudiats++;
+                cout << "Estudiant " << estudiats<< endl;
+                omple(e1);
+                e1.print();
+                break;
+        }
+        
+    }while (option != 1);
+
+    return 0;
+}
