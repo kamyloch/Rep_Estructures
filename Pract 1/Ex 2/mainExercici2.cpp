@@ -8,7 +8,7 @@ int demana(string arr_options[]){
     do{
     
         //Mostra menú
-        for (int i = 1; i <= 2; i++)
+       for (int i = 1; i <= 2; i++)
             cout << i << ". " << (arr_options[i-1])<< endl;
 
         //Demana petició
@@ -26,11 +26,22 @@ int demana(string arr_options[]){
 
 void omple (Estudiant &e){
     cout << "Nom: ";
-    cin >> e.nom;
+    if(!(cin >> e.nom))
+        cout << "Error al introduir el nom" << endl;
+        
     cout << "Any de Naixement: ";
-    cin >> e.any;
+    if(!(cin >> e.any)){
+        cout << "Error al introduir l'any de naixement" << endl;
+        cin.clear();
+        cin.ignore(1000, '\n');
+    }
+
     cout << "Assignatures: ";
-    cin >> e.assignatures;
+    if(!(cin >> e.assignatures)){
+        cout << "Error al introduir el nombre d'assignatures" << endl;
+        cin.clear();
+        cin.ignore(1000,'\n');
+    }
 }
 
 int main() {
