@@ -1,12 +1,26 @@
 #pragma once
 #include <string>
 
+using namespace std;
 class Estudiant {
-public:
-    std::string nom;
-    int any;
-    int assignatures;
+    private:
+        string nom;
+        int any;
+        int assignatures;
 
-    int edat();
-    void print();
+    
+    public:
+        //Constructor
+        Estudiant();
+
+        //Getters
+        string getNom();
+        int getAny();
+        int getAssignatures();
+        int getedat();
+
+        //Mètodes
+        void print();
+        void desar();
+
 };
