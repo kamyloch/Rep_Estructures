@@ -108,8 +108,14 @@ void imprimirUsuaris(const vector<Usuari>& usuaris){
         cout << "------------------------" << endl;
     }
 }
-
-
+void imprimirLlibres (const vector<Usuari>& usuaris){
+    string dni;
+    cout << "DNI de l'usuari: ";
+    cin >> dni;
+    for (int i = 0; i < usuaris.size(); i++)
+        if (usuaris[i].getDni() == dni)
+            usuaris[i].mostraLlibres();
+}
 
 int main (){
     vector<string> arr_options = {"Afegir Usuari","Eliminar Usuari","Afegir Llibre a un usuari","Eliminar Llibre d'un usuari","Imprimir usuaris de la biblioteca municipal","Imprimir els libres d’un usuari","Sortir"};
@@ -140,18 +146,10 @@ int main (){
                 cout << "Imprimir usuaris de la biblioteca municipal" << endl;
                 imprimirUsuaris(usuaris);
                 break;
-            case 6:{
+            case 6:
                 cout << "Imprimir els libres d'un usuari" << endl;
-                string dni;
-                cout << "DNI de l'usuari: ";
-                cin >> dni;
-                for (int i = 0; i < usuaris.size(); i++){
-                    if (usuaris[i].getDni() == dni){
-                        usuaris[i].mostraLlibres();
-                        break;
-                    }
-                }
-                break;}
+                imprimirLlibres(usuaris);
+                break;
             case 7:
                 cout << "Sortir" << endl;
                 break;

@@ -60,7 +60,7 @@ void Usuari::eliminaLlibre(string nom) {
     if (i == llibres.size())
         cout << "No s'ha trobat el llibre amb el nom proporcionat" << endl;
 };
-void Usuari::mostraLlibres() {
+void Usuari::mostraLlibres() const{
     if (llibres.size() == 0){
         cout << "L'usuari no té llibres associats" << endl;
         return;

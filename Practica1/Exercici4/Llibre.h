@@ -14,7 +14,7 @@ class Llibre{
 
     public:
         Llibre(string t, string a, string i, int any);
-        void mostrarInfo();
+        void mostrarInfo() const;
 
         // Getters
         string getTitol();

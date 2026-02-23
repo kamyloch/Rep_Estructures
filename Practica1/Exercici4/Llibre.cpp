@@ -10,7 +10,7 @@ Llibre::Llibre(string t, string a, string i, int any) {
     anyPublicacio = any;
 };
 
-void Llibre::mostrarInfo() {
+void Llibre::mostrarInfo() const{
     cout << "Titol: " << titol << endl;
     cout << "Autor: " << autor << endl;
     cout << "ISBN: " << isbn << endl;

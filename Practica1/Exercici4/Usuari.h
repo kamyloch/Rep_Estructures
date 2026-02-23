@@ -33,6 +33,6 @@ class Usuari{
         void print();
         void afegeixLlibre(string nom, string autor, string isbn, int any);
         void eliminaLlibre(string nom);
-        void mostraLlibres();
+        void mostraLlibres() const;
 };
 #endif

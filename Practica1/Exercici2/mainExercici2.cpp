@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include "Estudiant.h"
 using namespace std;
 
@@ -13,10 +14,17 @@ int demana(string arr_options[]){
 
         //Demana petició
         cout << "Digues: ";
-        cin >> option;
-        if (option < 1 || 2 < option){
-            option  = -1;
+        if(cin >> option){
+            if (option < 1 || 2 < option){
+                option  = -1;
+                cout << "No vàlid, torna a triar-ne..." << endl;
+            }
+        }
+        else {
             cout << "No vàlid, torna a triar-ne..." << endl;
+            option  = -1;
+            cin.clear();
+            cin.ignore(1000, '\n');
         }
 
     }while(option == -1);
@@ -25,19 +33,24 @@ int demana(string arr_options[]){
 }
 
 void omple (Estudiant &e){
+    string nom;
+    int any;
+    int assignatures;
+
     cout << "Nom: ";
-    if(!(cin >> e.nom))
-        cout << "Error al introduir el nom" << endl;
-        
+    cin >> nom;
+    e.setNom(nom);
+    
     cout << "Any de Naixement: ";
-    if(!(cin >> e.any)){
-        cout << "Error al introduir l'any de naixement" << endl;
+    cin >> any;
+    if (any < 1 || 2026 < any) {
         cin.clear();
         cin.ignore(1000, '\n');
     }
 
+
     cout << "Assignatures: ";
-    if(!(cin >> e.assignatures)){
+    if(!(cin >> assignatures)){
         cout << "Error al introduir el nombre d'assignatures" << endl;
         cin.clear();
         cin.ignore(1000,'\n');
@@ -57,14 +70,13 @@ int main() {
             case 1:
                 cout << "adeu!" << endl;
                 break;
-            case 2: {
+            case 2: 
                 Estudiant e1;
                 estudiats++;
                 cout << "Estudiant " << estudiats<< endl;
                 omple(e1);
                 e1.print();
                 break;
-            }
         }
         
     }while (option != 1);
