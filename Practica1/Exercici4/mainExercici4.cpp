@@ -4,6 +4,12 @@
 #include "Usuari.h"
 using namespace std;
 
+string tolower(string str){
+    for (int i = 0; i < str.size(); i++)
+        str[i] = tolower(str[i]);
+    return str;
+}
+
 int demana(vector<string> arr_options){
     int option;
     int n = arr_options.size();
@@ -94,7 +100,7 @@ void afegeixLlibre(vector<Usuari>& usuaris){
         throw invalid_argument("Any no vàlid");
     }
 
-    usuaris[i].afegeixLlibre(nom, autor, isbn, any);
+    usuaris[i].afegeixLlibre(tolower(nom), tolower(autor), tolower(isbn), tolower(any));
     cout << nom << " afegit a l'usuari!" << endl;
     }
 else
