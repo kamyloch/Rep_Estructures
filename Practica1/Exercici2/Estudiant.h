@@ -15,7 +15,7 @@ class Estudiant {
     public:
 
         //Constructor
-        Estudiant(string nom_, int any_, int assignatures_);
+        Estudiant(string nom_ = "", int any_ = 0, int assignatures_ = 0);
 
         //Setters
         void setAny(int any_);
@@ -27,6 +27,7 @@ class Estudiant {
         
         //Metodes
         void print();
+        void omple();
 };
 
 

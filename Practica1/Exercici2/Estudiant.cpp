@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Estudiant::Estudiant(string nom_, int any_, int assignatures_){
+Estudiant::Estudiant(string nom_ , int any_ , int assignatures_ ){
     nom = nom_;
     any = any_;
     assignatures = assignatures_;
@@ -31,4 +31,34 @@ void Estudiant::print(){
               << ",Any → " << any
               << ",Assignatures → " << assignatures
               << std::endl;
+}
+
+void Estudiant :: omple (){
+    string nom;
+    int any;
+    int assignatures;
+
+    cout << "Nom: ";
+    cin >> nom;
+    
+    cout << "Any de Naixement: ";
+    cin >> any;
+    if (any < 1 || 2026 < any) {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        throw invalid_argument("Any de naixement incorrecte");
+        }
+
+
+    cout << "Assignatures: ";
+    cin >> assignatures;
+        if (assignatures < 1) {
+            cin.clear();
+            cin.ignore(1000,'\n');
+            throw invalid_argument("Nombre d'assignatures incorrecte");
+        }
+
+    setNom(nom);
+    setAny(any);
+    setAssignatures(assignatures);
 }

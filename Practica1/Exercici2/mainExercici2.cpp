@@ -32,38 +32,6 @@ int demana(string arr_options[]){
     return option;
 }
 
-Estudiant omple (){
-    string nom;
-    int any;
-    int assignatures;
-
-    cout << "Nom: ";
-    cin >> nom;
-    
-    do {
-        cout << "Any de Naixement: ";
-        cin >> any;
-        if (any < 1 || 2026 < any) {
-            cout << "Error al introduir el any de naixement" << endl;
-            cin.clear();
-            cin.ignore(1000, '\n');
-        }
-    } while (any < 1 || 2026 < any);
-
-
-    do{
-        cout << "Assignatures: ";
-        cin >> assignatures;
-        if (assignatures < 1) {
-            cout << "Error al introduir el nombre d'assignatures" << endl;
-            cin.clear();
-            cin.ignore(1000,'\n');
-        }
-    } while (assignatures < 1);
-
-    return Estudiant(nom, any, assignatures);
-}
-
 int main() {
     int option;
     string arr_options[] = {"Sortir", "Informar Estudiant"};
@@ -79,8 +47,15 @@ int main() {
                 break;
             case 2: 
                 estudiats++;
-                cout << "Estudiant " << estudiats<< endl;
-                omple();
+                cout << "Estudiant #" << estudiats<< endl;
+                Estudiant nouEstudint = Estudiant();
+                try{
+                nouEstudint.omple();}
+                catch (invalid_argument e){
+                    cout << "Error: " << e.what() << endl;
+                    break;
+                }
+                nouEstudint.print();
                 break;
         }
         
