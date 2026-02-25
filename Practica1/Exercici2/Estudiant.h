@@ -15,7 +15,7 @@ class Estudiant {
     public:
 
         //Constructor
-        Estudiant();
+        Estudiant(string nom_, int any_, int assignatures_);
 
         //Setters
         void setAny(int any_);
@@ -23,7 +23,6 @@ class Estudiant {
         void setNom(string nom_);
 
         //Getters
-        int getEdat() const;
         int getEdat() const;
         
         //Metodes

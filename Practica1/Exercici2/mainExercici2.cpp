@@ -32,29 +32,36 @@ int demana(string arr_options[]){
     return option;
 }
 
-void omple (Estudiant &e){
+Estudiant omple (){
     string nom;
     int any;
     int assignatures;
 
     cout << "Nom: ";
     cin >> nom;
-    e.setNom(nom);
     
-    cout << "Any de Naixement: ";
-    cin >> any;
-    if (any < 1 || 2026 < any) {
-        cin.clear();
-        cin.ignore(1000, '\n');
-    }
+    do {
+        cout << "Any de Naixement: ";
+        cin >> any;
+        if (any < 1 || 2026 < any) {
+            cout << "Error al introduir el any de naixement" << endl;
+            cin.clear();
+            cin.ignore(1000, '\n');
+        }
+    } while (any < 1 || 2026 < any);
 
 
-    cout << "Assignatures: ";
-    if(!(cin >> assignatures)){
-        cout << "Error al introduir el nombre d'assignatures" << endl;
-        cin.clear();
-        cin.ignore(1000,'\n');
-    }
+    do{
+        cout << "Assignatures: ";
+        cin >> assignatures;
+        if (assignatures < 1) {
+            cout << "Error al introduir el nombre d'assignatures" << endl;
+            cin.clear();
+            cin.ignore(1000,'\n');
+        }
+    } while (assignatures < 1);
+
+    return Estudiant(nom, any, assignatures);
 }
 
 int main() {
@@ -71,11 +78,9 @@ int main() {
                 cout << "adeu!" << endl;
                 break;
             case 2: 
-                Estudiant e1;
                 estudiats++;
                 cout << "Estudiant " << estudiats<< endl;
-                omple(e1);
-                e1.print();
+                omple();
                 break;
         }
         
