@@ -14,7 +14,6 @@ class Llibre{
 
     public:
         Llibre(string t, string a, string i, int any);
-        void mostrarInfo() const;
 
         // Getters
         string getTitol();
@@ -23,11 +22,7 @@ class Llibre{
         int getAnyPublicacio();
 
         //Printers
-
-        void printTitol();
-        void printAutor();
-        void printIsbn();
-        void printAnyPublicacio();
+        void print() const;
 };
 
 #endif

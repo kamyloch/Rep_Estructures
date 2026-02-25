@@ -19,7 +19,6 @@ class Usuari{
 
     public:
         Usuari(string n, string a, string p, string t, string d, int e);
-        void mostrarInfo() const;
         
         // Getters
         string getNom() const;
@@ -30,7 +29,7 @@ class Usuari{
         int getEdat() const;
 
         //Metodes
-        void print();
+        void print() const;
         void afegeixLlibre(string nom, string autor, string isbn, int any);
         void eliminaLlibre(string nom);
         void mostraLlibres() const;

@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-
+//Constructor
 Usuari::Usuari(string n, string a, string p, string t, string d, int e) {
     nom = n;
     adreca = a;
@@ -10,15 +10,6 @@ Usuari::Usuari(string n, string a, string p, string t, string d, int e) {
     telefon = t;
     dni = d;
     edat = e;
-};
-
-void Usuari::mostrarInfo() const {
-    cout << "Nom: " << nom << endl;
-    cout << "Adreça: " << adreca << endl;
-    cout << "Població: " << poblacio << endl;
-    cout << "Telèfon: " << telefon << endl;
-    cout << "DNI: " << dni << endl;
-    cout << "Edat: " << edat << endl;
 };
 
 // Getters
@@ -42,32 +33,37 @@ int Usuari::getEdat() const {
 };
 
 //Metodes
-void Usuari::print() {
-    mostrarInfo();
+void Usuari::print() const{
+    cout << "Nom: " << nom << endl;
+    cout << "Adreça: " << adreca << endl;
+    cout << "Població: " << poblacio << endl;
+    cout << "Telèfon: " << telefon << endl;
+    cout << "DNI: " << dni << endl;
+    cout << "Edat: " << edat << endl;
 };
 void Usuari::afegeixLlibre(string nom, string autor, string isbn, int any) {
     llibres.push_back(Llibre(nom, autor, isbn, any));
 };
-void Usuari::eliminaLlibre(string nom) {
+void Usuari::eliminaLlibre(string isbn) {
     int i;
     for (i = 0; i < llibres.size(); i++){
-        if (llibres[i].getTitol() == nom){
+        if (llibres[i].getIsbn() == isbn){
             llibres.erase(llibres.begin() + i);
             cout << "Llibre eliminat" << endl;
             return;
         }
     }
     if (i == llibres.size())
-        cout << "No s'ha trobat el llibre amb el nom proporcionat" << endl;
+        cout << "No s'ha trobat el llibre amb l'ISBN proporcionat" << endl;
 };
 void Usuari::mostraLlibres() const{
-    if (llibres.size() == 0){
-        cout << "L'usuari no té llibres associats" << endl;
-        return;
-    }
+    if (llibres.size() == 0)
+        cout << "--- "<< nom << " no té llibres ---" << endl;
+    else
+        cout << "---- Libres de " << nom << " ----" << endl;
     for (int i = 0; i < llibres.size(); i++){
         cout << "Llibre " << i + 1 << ":" << endl;
-        llibres[i].mostrarInfo();
+        llibres[i].print();
         cout << "------------------------" << endl;
     }
 };

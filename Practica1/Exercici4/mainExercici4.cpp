@@ -1,25 +1,26 @@
 #include <iostream>
 #include <vector>
+#include <stdexcept>
 #include "Usuari.h"
 using namespace std;
 
 int demana(vector<string> arr_options){
     int option;
     int n = arr_options.size();
-    cout << "Hola que vols fer?" << endl;
+    cout << "\nHola que vols fer?" << endl;
     do{
     
         //Mostra menú
         for (int i = 1; i <= n; i++)
-            cout << i << ". " << (arr_options[i-1])<< endl;
+            cout << (i==n?0:i) << ". " << (arr_options[i-1])<< endl;
 
         //Demana petició
         cout << "Digues: ";
-        if (!(cin >> option)||(option < 1 || n < option)){
+        if (!(cin >> option)||(option < 0 || n < option)){
             option  = -1;
-            cout << "No vàlid, torna a triar-ne..." << endl;
             cin.clear();
             cin.ignore(1000, '\n');
+            throw invalid_argument("Opció no vàlida");
         }
 
     }while(option == -1);
@@ -32,16 +33,25 @@ void afegeixUsuari(vector<Usuari>& usuaris){
 
     cout << "Nom: ";
     cin >> nom;
+
     cout << "Adreça: ";
     cin >> adreca;
+
     cout << "Població: ";
     cin >> poblacio;
+
     cout << "Telèfon: ";
     cin >> telefon;
+
     cout << "DNI: ";
     cin >> dni;
+
     cout << "Edat: ";
-    cin >> edat;
+    if(!(cin >> edat) || edat < 1){
+        cin.clear();
+        cin.ignore(1000, '\n');
+        throw invalid_argument("Edat no vàlida");
+    }
 
     usuaris.push_back(Usuari(nom, adreca, poblacio, telefon, dni, edat));
 }
@@ -53,7 +63,7 @@ void eliminaUsuari(vector<Usuari>& usuaris){
     for (i = 0; i < usuaris.size(); i++){
         if (usuaris[i].getDni() == dni){
             usuaris.erase(usuaris.begin() + i);
-            cout << "Usuari eliminat" << endl;
+            cout << "Usuari " << usuaris[i].getNom() << " eliminat" << endl;
         }
     }
     if (i == usuaris.size())
@@ -70,7 +80,7 @@ void afegeixLlibre(vector<Usuari>& usuaris){
     int i = 0;
     while (i < usuaris.size() && usuaris[i].getDni() != dni){i++;}
 
-    if (usuaris[i].getDni() == dni){
+    if (i != usuaris.size()){
     cout << "Nom del llibre: ";
     cin >> nom;
     cout << "Autor del llibre: ";
@@ -78,57 +88,81 @@ void afegeixLlibre(vector<Usuari>& usuaris){
     cout << "ISBN del llibre: ";
     cin >> isbn;
     cout << "Any de publicació del llibre: ";
-    cin >> any;
+    if (!(cin >> any)){
+        cin.clear();
+        cin.ignore(1000, '\n');
+        throw invalid_argument("Any no vàlid");
+    }
 
     usuaris[i].afegeixLlibre(nom, autor, isbn, any);
     cout << nom << " afegit a l'usuari!" << endl;
-}
+    }
 else
     cout << "No s'ha trobat l'usuari amb el DNI proporcionat" << endl;
 }
 void eliminaLlibre(vector<Usuari>& usuaris){
-    string dni, nom;
+    string dni, isbn;
     cout << "DNI de l'usuari: ";
     cin >> dni;
-    cout << "Nom del llibre a eliminar: ";
-    cin >> nom;
+    int i=0;
+    while (i < usuaris.size() && usuaris[i].getDni() != dni){i++;};
+    if (i == usuaris.size())
+        cout << "Usuari no trobat!" << endl;
 
-    for (int i = 0; i < usuaris.size(); i++){
-        if (usuaris[i].getDni() == dni){
-            usuaris[i].eliminaLlibre(nom);
-            cout << "Llibre eliminat de l'usuari" << endl;
-            return;
-        }
-    }
-    cout << "No s'ha trobat l'usuari amb el DNI proporcionat" << endl;
+
+    cout << "ISBN del llibre a eliminar: ";
+    cin >> isbn;
+
+    usuaris[i].eliminaLlibre(isbn);
 }
 void imprimirUsuaris(const vector<Usuari>& usuaris){
-    for (int i = 0; i < usuaris.size(); i++){
-        usuaris[i].mostrarInfo();
+    cout << "-------- Usuaris --------" << endl;
+    int i;
+    for (i = 0; i < usuaris.size(); i++){
+        usuaris[i].print();
         cout << "------------------------" << endl;
     }
+    if (i == 0)
+        cout << "No hi ha usuaris a la biblioteca" << endl;
 }
 void imprimirLlibres (const vector<Usuari>& usuaris){
     string dni;
     cout << "DNI de l'usuari: ";
     cin >> dni;
-    for (int i = 0; i < usuaris.size(); i++)
-        if (usuaris[i].getDni() == dni)
+    int i;
+    bool found = false;
+    for (i = 0; i < usuaris.size() && !found; i++)
+        if (usuaris[i].getDni() == dni){
             usuaris[i].mostraLlibres();
-}
+            found = true;
+        }
+    
+    if (!found)
+        cout << "No s'ha trobat l'usuari amb el DNI proporcionat" << endl;
+    }
 
 int main (){
-    vector<string> arr_options = {"Afegir Usuari","Eliminar Usuari","Afegir Llibre a un usuari","Eliminar Llibre d'un usuari","Imprimir usuaris de la biblioteca municipal","Imprimir els libres d’un usuari","Sortir"};
+    vector<string> arr_options = {"Afegir Usuari","Eliminar Usuari","Afegir Llibre a un usuari","Eliminar Llibre d'un usuari","Imprimir usuaris de la biblioteca municipal","Imprimir els libres d'un usuari","Sortir"};
     vector<Usuari> usuaris;
-
-    int option = demana(arr_options);
+    int option = -1;
 
     do{
-        option = demana(arr_options);
+        try{
+            option = demana(arr_options);
+        }
+        catch(invalid_argument& e){
+            cerr << "Error: " << e.what() << endl;
+            option = -1;
+        }
         switch(option){
             case 1:
                 cout << "Afegir Usuari"<< endl;
-                afegeixUsuari(usuaris);
+                try{
+                    afegeixUsuari(usuaris);
+                }
+                catch(invalid_argument& e){
+                    cerr << "Error: " << e.what() << endl;
+                }
                 break;
             case 2:
                 cout << "Eliminar Usuari" << endl;
@@ -136,7 +170,11 @@ int main (){
                 break;
             case 3:
                 cout << "Afegir Llibre a un usuari" << endl;
-                afegeixLlibre(usuaris);
+                try{
+                    afegeixLlibre(usuaris);}
+                catch(invalid_argument& e){
+                    cerr << "Error: " << e.what() << endl;
+                }
                 break;
             case 4:
                 cout << "Eliminar Llibre d'un usuari" << endl;
@@ -150,12 +188,12 @@ int main (){
                 cout << "Imprimir els libres d'un usuari" << endl;
                 imprimirLlibres(usuaris);
                 break;
-            case 7:
-                cout << "Sortir" << endl;
+            case 0:
+                cout << "Adeu!" << endl;
                 break;
 
         }
-    }while(option != 7);
+    }while(option != 0);
 
     return 0;
 }
