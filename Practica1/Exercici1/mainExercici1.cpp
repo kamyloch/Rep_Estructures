@@ -17,6 +17,8 @@ int demana(string nom, string arr_options[]){
         if (option < 1 || 3 < option){
             option  = -1;
             cout << "No vàlid, torna a triar-ne..." << endl;
+            cin.clear();
+            cin.ignore(10000, '\n');
         }
 
     }while(option == -1);
