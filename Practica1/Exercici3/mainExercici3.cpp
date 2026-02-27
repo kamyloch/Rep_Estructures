@@ -1,3 +1,5 @@
+//Autor: Camilo Chicaiza Toapanta
+
 #include <iostream>
 #include "Estudiant.h"
 #include <fstream>

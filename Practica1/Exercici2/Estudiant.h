@@ -1,3 +1,5 @@
+//Autor: Camilo Chicaiza Toapanta
+ 
 #define ESTUDIANT_H
 #ifdef ESTUDIANT_H
 

@@ -1,3 +1,5 @@
+//Autor: Camilo Chicaiza Toapanta
+
 #include "Llibre.h"
 #include <iostream>
 

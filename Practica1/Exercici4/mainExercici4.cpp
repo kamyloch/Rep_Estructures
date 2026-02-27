@@ -1,3 +1,5 @@
+//Autor: Camilo Chicaiza Toapanta
+
 #include <iostream>
 #include <vector>
 #include <stdexcept>

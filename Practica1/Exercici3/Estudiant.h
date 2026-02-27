@@ -1,4 +1,7 @@
-#pragma once
+//Autor: Camilo Chicaiza Toapanta
+
+#ifndef LLIBRE_H
+#define LLIBRE_H
 #include <string>
 
 using namespace std;
@@ -30,3 +33,5 @@ class Estudiant {
         void omple();
 
 };
+
+#endif

@@ -1,3 +1,5 @@
+//Autor: Camilo Chicaiza Toapanta
+
 #ifndef USUARI_H
 #define USUARI_H
 

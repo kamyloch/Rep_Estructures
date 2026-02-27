@@ -1,5 +1,5 @@
 //Autor: Camilo Chicaiza Toapanta
-
+ 
 #include <iostream>
 #include <string>
 using namespace std;

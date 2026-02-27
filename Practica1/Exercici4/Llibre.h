@@ -1,3 +1,5 @@
+//Autor: Camilo Chicaiza Toapanta
+
 #ifndef LLIBRE_H
 #define LLIBRE_H
 
