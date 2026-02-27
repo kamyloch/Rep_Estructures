@@ -1,7 +1,11 @@
+//Autor: Camilo Chicaiza Toapanta
+
 #include <iostream>
 #include <string>
 using namespace std;
 
+
+//He fet el metode "demana" no falla mai en tenir un do...while i cin.clear/ignore que nomes deixa triar numeros 1-3
 int demana(string nom, string arr_options[]){
     int option;
     cout << "Hola " + nom + " que vols fer?" << endl;
@@ -26,6 +30,7 @@ int demana(string nom, string arr_options[]){
     return option;
 }
 
+//Al main nomes es fa servir demana i segueix endavant
 int main() {
     string nom;
     int option;

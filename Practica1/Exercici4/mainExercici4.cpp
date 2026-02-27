@@ -3,13 +3,13 @@
 #include <stdexcept>
 #include "Usuari.h"
 using namespace std;
-
+//Ens assegura que las dades de Agfegir llibre siguin minuscules
 string tolower(string str){
     for (int i = 0; i < str.size(); i++)
         str[i] = tolower(str[i]);
     return str;
 }
-
+//Demana un nombre del rang al usuari
 int demana(vector<string> arr_options){
     int option;
     int n = arr_options.size();
@@ -23,7 +23,6 @@ int demana(vector<string> arr_options){
         //Demana petició
         cout << "Digues: ";
         if (!(cin >> option)||(option < 0 || n < option)){
-            option  = -1;
             cin.clear();
             cin.ignore(1000, '\n');
             throw invalid_argument("Opció no vàlida");
@@ -33,6 +32,7 @@ int demana(vector<string> arr_options){
 
     return option;
 }
+//Fem throw  en demana i afegir si no la dades no son valides
 void afegeixUsuari(vector<Usuari>& usuaris){
     string nom, adreca, poblacio, telefon, dni;
     int edat;
@@ -61,6 +61,7 @@ void afegeixUsuari(vector<Usuari>& usuaris){
 
     usuaris.push_back(Usuari(nom, adreca, poblacio, telefon, dni, edat));
 }
+//Elimina un usuari, no fa throw
 void eliminaUsuari(vector<Usuari>& usuaris){
     string dni;
     cout << "DNI de l'usuari a eliminar: ";
@@ -75,6 +76,7 @@ void eliminaUsuari(vector<Usuari>& usuaris){
     if (i == usuaris.size())
         cout << "No s'ha trobat l'usuari amb el DNI proporcionat" << endl;
 }
+//throw si el any no es valid...
 void afegeixLlibre(vector<Usuari>& usuaris){
 
     string dni, nom, autor, isbn;
@@ -106,31 +108,43 @@ void afegeixLlibre(vector<Usuari>& usuaris){
 else
     cout << "No s'ha trobat l'usuari amb el DNI proporcionat" << endl;
 }
+//Fem servir iterators per trobar el usuari donat
 void eliminaLlibre(vector<Usuari>& usuaris){
     string dni, isbn;
     cout << "DNI de l'usuari: ";
     cin >> dni;
-    int i=0;
-    while (i < usuaris.size() && usuaris[i].getDni() != dni){i++;};
-    if (i == usuaris.size())
-        cout << "Usuari no trobat!" << endl;
+    bool trobat = false;
 
-
-    cout << "ISBN del llibre a eliminar: ";
-    cin >> isbn;
-
-    usuaris[i].eliminaLlibre(isbn);
-}
-void imprimirUsuaris(const vector<Usuari>& usuaris){
-    cout << "-------- Usuaris --------" << endl;
-    int i;
-    for (i = 0; i < usuaris.size(); i++){
-        usuaris[i].print();
-        cout << "------------------------" << endl;
+    vector<Usuari>::iterator it = usuaris.begin();
+    while (it != usuaris.end()){
+        if (it->getDni() == dni){
+            trobat = true;
+        }
+        ++it;
     }
-    if (i == 0)
+    if (!trobat)
+        cout << "Usuari no existent\n";
+    else{
+        --it;
+        cout << "ISBN del llibre a eliminar: ";
+        cin >> isbn;
+        it->eliminaLlibre(isbn);
+    }
+}
+//Fem un print amb iterators
+void imprimirUsuaris(vector<Usuari>& usuaris){
+    cout << "-------- Usuaris --------" << endl;
+    vector<Usuari>::iterator i= usuaris.begin();
+    while (i != usuaris.end()){
+        i->print();
+        cout << "------------------------" << endl;
+        ++i;
+    }
+    if (--i == usuaris.end())
         cout << "No hi ha usuaris a la biblioteca" << endl;
 }
+
+//Imprimeix llibres sense iterators (per provar)
 void imprimirLlibres (const vector<Usuari>& usuaris){
     string dni;
     cout << "DNI de l'usuari: ";
@@ -160,6 +174,7 @@ int main (){
             cerr << "Error: " << e.what() << endl;
             option = -1;
         }
+        //Tractem totes les opcion i exepcions0
         switch(option){
             case 1:
                 cout << "Afegir Usuari"<< endl;

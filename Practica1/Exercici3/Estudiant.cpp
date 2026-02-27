@@ -1,3 +1,5 @@
+//Author: Camilo Chicaiza Toapanta
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -38,16 +40,24 @@ void Estudiant::setAssignatures(int assignatures) {
 
 //Mètodes
 void Estudiant::print() {
-    cout << "Nom → " << getNom()
-         << " ,Edat → " << getedat()
-         << " ,Assignatures → " << getAssignatures()
+    cout << "Nom: " << getNom()
+         << "\nEdat: " << getedat()
+         << "\nAssignatures: " << getAssignatures()
          << endl;
 }
+
+//Fem servir el out-file-stream de fstream
+//amb el parametre ios::app (append) per acomular estudiants
 void Estudiant::desar() {
     ofstream dades("fitxer.txt",ios::app);
     dades << getNom() << " " << getAny() << " " << getAssignatures() << endl;
     dades.close();
+    
+    cout << "Estudiant " << getNom() << " afegit!\n";
 }
+
+//Aquest metode throws un invalid_argument si l'any no es un 1 < int < 2026
+//o be si  assignatures es > 1 o tampoc es int
 void Estudiant :: omple (){
     string nom;
     int any;
@@ -73,6 +83,7 @@ void Estudiant :: omple (){
         throw invalid_argument("Nombre d'assignatures incorrecte");
     }
 
+    //Si tot surt be, afegim els valors al nou estudian
     setNom(nom);
     setAny(any);
     setAssignatures(assignatures);

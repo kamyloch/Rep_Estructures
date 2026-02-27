@@ -1,8 +1,11 @@
+//Autor: Camilo Chicaiza Toapanta
+
 #include <iostream>
 #include <stdexcept>
 #include "Estudiant.h"
 using namespace std;
 
+//He fet el metode "demana" no falla mai en tenir un do...while i cin.clear/ignore que nomes deixa triar numeros 1-3
 int demana(string arr_options[]){
     int option;
     cout << "Hola que vols fer?" << endl;
@@ -46,11 +49,13 @@ int main() {
                 cout << "adeu!" << endl;
                 break;
             case 2: 
-                estudiats++;
-                cout << "Estudiant #" << estudiats<< endl;
+                //Fem el try del metode omple de Estudiant y guardem la compte en una variable
+                cout << "Estudiant #" << (estudiats+1)<< endl;
                 Estudiant nouEstudint = Estudiant();
                 try{
-                nouEstudint.omple();}
+                nouEstudint.omple();
+                estudiats++; //Si s'ha omples, afegim a la variable
+                }
                 catch (invalid_argument e){
                     cout << "Error: " << e.what() << endl;
                     break;

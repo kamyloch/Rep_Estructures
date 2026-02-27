@@ -1,3 +1,5 @@
+//Autor: Camilo Chicaiza Toapanta   
+
 #include <iostream>
 #include "Estudiant.h"
 
@@ -33,6 +35,8 @@ void Estudiant::print(){
               << std::endl;
 }
 
+//Aquest metode throws un invalid_argument si l'any no es un 1 < int < 2026
+//o be si  assignatures es > 1 o tampoc es int
 void Estudiant :: omple (){
     string nom;
     int any;
@@ -58,6 +62,7 @@ void Estudiant :: omple (){
             throw invalid_argument("Nombre d'assignatures incorrecte");
         }
 
+    //Si tot surt be, assignem
     setNom(nom);
     setAny(any);
     setAssignatures(assignatures);
