@@ -34,6 +34,9 @@ string Usuari::getDni() const {
 int Usuari::getEdat() const {
     return edat;
 };
+vector<Llibre> Usuari::getLlibres() const {
+    return llibres;
+};
 
 //Metodes
 void Usuari::print() const{
@@ -48,10 +51,10 @@ void Usuari::afegeixLlibre(string nom, string autor, string isbn, int any) {
     llibres.push_back(Llibre(nom, autor, isbn, any));
 };
 //Provem amb iteradors
-void Usuari::eliminaLlibre(string isbn) {
+void Usuari::eliminaLlibre(string nom) {
     vector<Llibre>::iterator it;
     for (it = llibres.begin(); it != llibres.end(); ++it){
-        if (it->getIsbn() == isbn){
+        if (it->getTitol() == nom){
             llibres.erase(it);
             cout << "Llibre eliminat" << endl;
             return;

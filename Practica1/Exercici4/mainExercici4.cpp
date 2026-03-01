@@ -34,10 +34,73 @@ int demana(vector<string> arr_options){
 
     return option;
 }
+//throw si el any no es valid...
+void afegeixLlibre(vector<Usuari>& usuaris, string dni_ = ""){
+
+    string dni = dni_ , nom, autor, isbn;
+    int any;
+
+    if (dni == ""){
+        cout << "DNI de l'usuari: ";
+        cin >> dni;
+    }
+
+    //Busquem al usuari
+    vector<Usuari>::iterator it = usuaris.begin();
+    while (it != usuaris.end() && it -> getDni() != dni){++it;}
+    if (it == usuaris.end())
+        throw invalid_argument("No s'ha trobat l'usuari amb el DNI proporcionat");
+
+    
+    cout << "Nom del llibre: ";
+    cin >> nom;
+    //El nom del llibre ha de ser unic!
+    vector<Llibre> lista = it->getLlibres();
+    vector<Llibre>::iterator it2 = lista.begin();
+    while (it2 != lista.end() && it2 -> getTitol() != nom){++it2;}
+    if (it2 != lista.end())
+        throw invalid_argument("El llibre ja existeix");
+
+    cout << "Autor del llibre: ";
+    cin >> autor;
+    cout << "ISBN del llibre: ";
+    cin >> isbn;
+    cout << "Any de publicació del llibre: ";
+    if (!(cin >> any)){
+        cin.clear();
+        cin.ignore(1000, '\n');
+        throw invalid_argument("Any no vàlid");
+    }
+    //Afegim el llibre si tot correcte
+    it->afegeixLlibre(tolower(nom), tolower(autor), tolower(isbn), tolower(any));
+    cout << nom << " afegit a l'usuari!" << endl;
+
+    //Preguntem si es vol afegir un altre llibre...
+    vector<string>opcions = {"Si, vull afegir un altre llibre", "No, anar al menú"};
+    int op = -1;
+    do{try{op = demana(opcions);
+        }catch(invalid_argument &e){
+            cout << e.what()<< endl;}
+    }while(op == -1);
+
+    if (op == 1)
+        afegeixLlibre(usuaris,dni);
+
+}
+
 //Fem throw  en demana i afegir si no la dades no son valides
 void afegeixUsuari(vector<Usuari>& usuaris){
     string nom, adreca, poblacio, telefon, dni;
     int edat;
+
+    cout << "DNI: ";
+    cin >> dni;
+
+    //Comprovem que dni sigui unic!
+    vector<Usuari>::const_iterator it = usuaris.begin();
+    while (it != usuaris.end() && it->getDni() != dni){++it;}
+    if (it != usuaris.end())
+        throw invalid_argument ("El dni " + dni + " ja existeix!");
 
     cout << "Nom: ";
     cin >> nom;
@@ -51,17 +114,27 @@ void afegeixUsuari(vector<Usuari>& usuaris){
     cout << "Telèfon: ";
     cin >> telefon;
 
-    cout << "DNI: ";
-    cin >> dni;
-
+    //Comprovem que la edat sigui válida
     cout << "Edat: ";
     if(!(cin >> edat) || edat < 1){
         cin.clear();
         cin.ignore(1000, '\n');
         throw invalid_argument("Edat no vàlida");
     }
-
+    
+    //Agegim a l'usuari
     usuaris.push_back(Usuari(nom, adreca, poblacio, telefon, dni, edat));
+
+    //Preguntem si es vol afegir un llibre...
+    vector<string>opcions = {"Si, vull afegir un llibre", "No, anar al menú"};
+    int op = -1;
+    do{try{op = demana(opcions);
+        }catch(invalid_argument &e){
+            cout << e.what()<< endl;}
+    }while(op == -1);
+
+    if (op == 1)
+        afegeixLlibre(usuaris,dni);
 }
 //Elimina un usuari, no fa throw
 void eliminaUsuari(vector<Usuari>& usuaris){
@@ -78,65 +151,32 @@ void eliminaUsuari(vector<Usuari>& usuaris){
     if (i == usuaris.size())
         cout << "No s'ha trobat l'usuari amb el DNI proporcionat" << endl;
 }
-//throw si el any no es valid...
-void afegeixLlibre(vector<Usuari>& usuaris){
-
-    string dni, nom, autor, isbn;
-    int any;
-
-    cout << "DNI de l'usuari: ";
-    cin >> dni;
-
-    int i = 0;
-    while (i < usuaris.size() && usuaris[i].getDni() != dni){i++;}
-
-    if (i != usuaris.size()){
-    cout << "Nom del llibre: ";
-    cin >> nom;
-    cout << "Autor del llibre: ";
-    cin >> autor;
-    cout << "ISBN del llibre: ";
-    cin >> isbn;
-    cout << "Any de publicació del llibre: ";
-    if (!(cin >> any)){
-        cin.clear();
-        cin.ignore(1000, '\n');
-        throw invalid_argument("Any no vàlid");
-    }
-
-    usuaris[i].afegeixLlibre(tolower(nom), tolower(autor), tolower(isbn), tolower(any));
-    cout << nom << " afegit a l'usuari!" << endl;
-    }
-else
-    cout << "No s'ha trobat l'usuari amb el DNI proporcionat" << endl;
-}
 //Fem servir iterators per trobar el usuari donat
 void eliminaLlibre(vector<Usuari>& usuaris){
-    string dni, isbn;
+    string dni, titol;
     cout << "DNI de l'usuari: ";
     cin >> dni;
     bool trobat = false;
 
     vector<Usuari>::iterator it = usuaris.begin();
     while (it != usuaris.end()){
-        if (it->getDni() == dni){
+        if (it->getDni() == dni)
             trobat = true;
-        }
         ++it;
     }
     if (!trobat)
         cout << "Usuari no existent\n";
     else{
         --it;
-        cout << "ISBN del llibre a eliminar: ";
-        cin >> isbn;
-        it->eliminaLlibre(isbn);
+        cout << "Titol del llibre a eliminar: ";
+        cin >> titol;
+        it->eliminaLlibre(titol);
     }
 }
 //Fem un print amb iterators
-void imprimirUsuaris(vector<Usuari>& usuaris){
+void imprimirUsuaris(const vector<Usuari>& usuaris){
     cout << "-------- Usuaris --------" << endl;
-    vector<Usuari>::iterator i= usuaris.begin();
+    vector<Usuari>::const_iterator i= usuaris.begin();
     while (i != usuaris.end()){
         i->print();
         cout << "------------------------" << endl;

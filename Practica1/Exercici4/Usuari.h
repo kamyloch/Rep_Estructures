@@ -29,6 +29,7 @@ class Usuari{
         string getTelefon() const;
         string getDni() const;
         int getEdat() const;
+        vector<Llibre> getLlibres () const;
 
         //Metodes
         void print() const;
