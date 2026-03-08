@@ -67,6 +67,18 @@ template <class Elemento> PilaEstatica<Elemento>::PilaEstatica(initializer_list<
     }
 
 }
+template <class Elemento> PilaEstatica<Elemento>::PilaEstatica(const vector<Elemento>& elementos){
+    this->_capacidad = elementos.size();
+    this->_encima = -1;
+    this-> _datos.reserve(_capacidad);
+
+    typename vector<Elemento>::iterator it = elementos.begin();
+
+    for(it; it != elementos.end(); ++it){
+        this->_datos.push_back(*it);
+        this->_encima ++;
+    }
+}
 
 
 //Consultores
@@ -110,21 +122,10 @@ template <class Elemento> void PilaEstatica<Elemento>::print() const{
         typename vector<Elemento>::const_iterator it = this->_datos.begin();
         for (int i = 1; it< _datos.end()-1; it ++, i++)
             cout << *it <<", ";
-        cout << *it<<"]\n";
-    }
+        cout << *it<<"]";
+    } // La pila no fa salt de linea per la finalitat de aquest exercici
     else 
-        cout << "[]"<< endl;
-    
-    
-    
-    /*if (estaVacia()){
-        cout << "*** La pila está buida ***"<<endl;
-        return;
-    }
-    typename vector<Elemento>::const_iterator it = this->_datos.begin();
-    cout<<"*** Mostrant Pila ***\n--------\n";
-    for (int i = 1; it!= _datos.end(); it ++, i++)
-        cout << i<< "| "<<*it << endl << "--------\n";*/
+        cout << "[]";
 }
 
 
