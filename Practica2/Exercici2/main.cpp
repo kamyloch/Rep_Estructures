@@ -37,7 +37,7 @@ void moure(PilaEstatica<int> &partida, PilaEstatica<int> &arribada){
     partida.suprimirElemento();
     arribada.anadirElemento(paquet);
 }
-void logistica(const int &n, PilaEstatica<int> &A, PilaEstatica<int> &B, PilaEstatica<int> &P, PilaEstatica<int> &orgA, PilaEstatica<int> &orgP, PilaEstatica<int> &orgB){ 
+void logistica(const int &n, PilaEstatica<int> &A, PilaEstatica<int> &B, PilaEstatica<int> &P, const PilaEstatica<int> &orgA, const PilaEstatica<int> &orgP, const PilaEstatica<int> &orgB){ 
     if (n == 1){
         moure(A,B);
         cout << "\nL'estat intermig és el següent:" << endl;
