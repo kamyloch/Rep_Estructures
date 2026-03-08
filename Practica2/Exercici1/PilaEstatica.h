@@ -67,7 +67,18 @@ template <class Elemento> PilaEstatica<Elemento>::PilaEstatica(initializer_list<
     }
 
 }
+template <class Elemento> PilaEstatica<Elemento>::PilaEstatica(const vector<Elemento>& elementos){
+    this->_capacidad = elementos.size();
+    this->_encima = -1;
+    this-> _datos.reserve(_capacidad);
 
+    typename vector<Elemento>::iterator it = elementos.begin();
+
+    for(it; it != elementos.end(); ++it){
+        this->_datos.push_back(*it);
+        this->_encima ++;
+    }
+}
 
 //Consultores
 template <class Elemento> int PilaEstatica<Elemento>::tamano()const{
