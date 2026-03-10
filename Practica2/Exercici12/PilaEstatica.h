@@ -104,7 +104,7 @@ template <class Elemento> void PilaEstatica<Elemento>::suprimirElemento(){
         this->_datos.pop_back();
         _encima--;
     }
-    else throw runtime_error("L’estructura està buida");
+    else throw runtime_error("L'estructura està buida");
 }
 template <class Elemento> void PilaEstatica<Elemento>::anadirElemento(const Elemento &e){
     if(!estaLlena()){
@@ -123,7 +123,7 @@ template <class Elemento> void PilaEstatica<Elemento>::print() const{
         for (int i = 1; it< _datos.end()-1; it ++, i++)
             cout << *it <<", ";
         cout << *it<<"]";
-    } // La pila no fa salt de linea per la finalitat de aquest exercici
+    } // La pila no fa salt de linea per la finalitat de aquest exercici, es faran al main
     else 
         cout << "[]";
 }

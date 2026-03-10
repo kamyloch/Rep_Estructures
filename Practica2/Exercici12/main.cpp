@@ -41,7 +41,7 @@ void logistica(const int &n, PilaEstatica<int> &A, PilaEstatica<int> &B, PilaEst
     if (n == 1){
         moure(A,B);
         cout << "\nL'estat intermig és el següent:" << endl;
-        printEstat(orgA,orgP,orgB); 
+        printEstat(A,P,B); 
     }
     else{
         logistica(n-1,A,P,B,orgA,orgP,orgB);
