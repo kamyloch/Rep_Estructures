@@ -6,7 +6,7 @@
 
 template <class Element>
 class Position{
-    // Permite que LinkedList acceda a _node directamente
+    // Permèt que LinkedList accedeixi a _node directament
     friend class LinkedList<Element>;
     public:
         //Constuctores
