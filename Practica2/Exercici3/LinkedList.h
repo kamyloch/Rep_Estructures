@@ -44,8 +44,8 @@ class LinkedList{
 template <class Element> 
 LinkedList<Element> :: LinkedList(){
     this->_size = 0;
-    this->_head = new NodeList<Element>(Element());//Element()???
-    this->_tail = new NodeList<Element>(Element());
+    this->_head = new NodeList<Element>();//Element()???
+    this->_tail = new NodeList<Element>();
 
     this->_head->setNext(_tail);
     this->_tail->setPrevious(_head);
@@ -54,6 +54,12 @@ template <class Element>
 LinkedList<Element> :: LinkedList(initializer_list<Element> elements): LinkedList(){
     for (Element x : elements)
         this->insertEnd(x);
+}
+template <class Element> 
+LinkedList<Element> :: LinkedList(const LinkedList& origen): LinkedList(){
+    Position<Element> it = origen.beginning();
+    for (it; it != origen.end(); it = ++it)
+        this->insertEnd(*it);
 }
 template <class Element> 
 LinkedList<Element>::~LinkedList() {
@@ -142,6 +148,7 @@ void LinkedList<Element> ::  deletePosition(Position<Element>& position){
         throw runtime_error("No es pot esborrar end()");
     delete position.deletePosition();
     this->_size--;
+    position._node = nullptr;
 }
 
 //Print

@@ -8,7 +8,9 @@ template <class E>
 class NodeList{
     public:
         //Constructors
+        NodeList();
         NodeList(const E&);
+        NodeList(const NodeList<E>&);
         virtual ~NodeList();
     
         //Getters
@@ -33,8 +35,18 @@ class NodeList{
 /*******    Definició de mètodes    *******/
 //Constructor
 template <class E> 
-NodeList<E>::NodeList(const E& element):
-_previous (nullptr), _element (element) , _next(nullptr) {}
+NodeList<E>::NodeList():
+    _previous (nullptr) , 
+    _next(nullptr)  
+{}
+template <class E> 
+NodeList<E>::NodeList(const E& element): NodeList(){
+    _element = element;
+}
+template <class E> 
+NodeList<E>::NodeList(const NodeList<E>& original):NodeList() {
+    _element  = original.accessElement();
+}
 template <class E> 
 NodeList<E>::~NodeList(){}
 
