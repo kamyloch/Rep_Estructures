@@ -72,7 +72,7 @@ template <class Elemento> PilaEstatica<Elemento>::PilaEstatica(const vector<Elem
     this->_encima = -1;
     this-> _datos.reserve(_capacidad);
 
-    typename vector<Elemento>::iterator it = elementos.begin();
+    typename vector<Elemento>::const_iterator it = elementos.begin();
 
     for(it; it != elementos.end(); ++it){
         this->_datos.push_back(*it);

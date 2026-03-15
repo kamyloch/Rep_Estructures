@@ -1,56 +1,80 @@
 #include "PilaEstatica.h"
-#include "Menu.h"
+#include "Menu.h" //He fet Menu.h per que tot sigui mès net
+#include <vector>
 #include <iostream>
 #include <stdexcept>
 
 using namespace std;
-//Mètodes Auxiliars
+/*** -- Mètodes Auxiliars -- ***/
+//Mostra estats intermigs de hanoi en el format "X: Pila = [...] tamaño = #X"
 void printEstat(const PilaEstatica<int> &A,const PilaEstatica<int> &P,const PilaEstatica<int> &B){
     cout << "A: Pila = ";
     A.print();
-    cout << " |  mida = " << A.tamano() << endl;
+    cout << " tamaño = " << A.tamano() << endl;
 
     cout << "P: Pila = ";
     P.print();
-    cout << " |  mida = " << P.tamano() << endl;
+    cout << " tamaño = " << P.tamano() << endl;
 
     cout << "B: Pila = ";
     B.print();
-    cout << " |  mida = " << B.tamano() << endl;
+    cout << " tamaño = " << B.tamano() << endl;
 }
+//Mostra estats inicial i final de hanoi (sense "tamaño") en format X: Pila = [...]
 void printEstatSenseMida(const PilaEstatica<int> &A,const PilaEstatica<int> &P,const PilaEstatica<int> &B){
-    cout << "A: Pila = ";
+    cout << "A: Pila ";
     A.print();
     cout << endl;
 
-    cout << "P: Pila = ";
+    cout << "P: Pila ";
     P.print();
     cout << endl;
 
-    cout << "B: Pila = ";
+    cout << "B: Pila ";
     B.print();
     cout << endl;
 }
+//Mou un element de la pila partida a la pila arribada (pot llançar exeption si partida esta buida)
 void moure(PilaEstatica<int> &partida, PilaEstatica<int> &arribada){
     int paquet;
     paquet = partida.elementoEncima();
     partida.suprimirElemento();
     arribada.anadirElemento(paquet);
 }
-void logistica(const int &n, PilaEstatica<int> &A, PilaEstatica<int> &B, PilaEstatica<int> &P, const PilaEstatica<int> &orgA, const PilaEstatica<int> &orgP, const PilaEstatica<int> &orgB){ 
+//Permet aplicar l'algoritme de hanoi i mostra en cada pas els moviments
+void logisticaAux(const int &n, PilaEstatica<int> &A, PilaEstatica<int> &B, PilaEstatica<int> &P, const PilaEstatica<int> &orgA, const PilaEstatica<int> &orgP, const PilaEstatica<int> &orgB){ 
     if (n == 1){
         moure(A,B);
         cout << "\nL'estat intermig és el següent:" << endl;
-        printEstat(A,P,B); 
+        printEstat(orgA,orgP,orgB); 
     }
     else{
-        logistica(n-1,A,P,B,orgA,orgP,orgB);
-        logistica(1,A,B,P,orgA,orgP,orgB);
-        logistica(n-1,P,B,A,orgA,orgP,orgB);
+        logisticaAux(n-1,A,P,B,orgA,orgP,orgB);
+        logisticaAux(1,A,B,P,orgA,orgP,orgB);
+        logisticaAux(n-1,P,B,A,orgA,orgP,orgB);
     }  
 }
+//Permet cridar l'algoritme de hanoi però amb orgX (original X) per no barrellar les piles en l'argoritme
+void logistica(const int &n, PilaEstatica<int> &A, PilaEstatica<int> &B, PilaEstatica<int> &P){
+    //Les tres variables extres son per cridar a printEstat correctament
+    logisticaAux(n,A,B,P,A,P,B);
+}
+//Activa un while que demana per cin un numero al usuari (n>0)
+int demanarN(string missatge = "Digues n ∈ ℕ"){
+    int n;
+    do{
+        if (cin.fail()){
+            cin.clear();
+            cin.ignore(1000,'\n');
+        }
+        cout << missatge << ": ";
+        cin >> n;
+    }while(cin.fail() || n < 1);
+    cout << endl;
+    return n;
+}
 
-//Mètodes demanats
+/*** -- Mètodes demanats -- ***/
 void casProvaEx1(){
 try {
     // 1. Crear una PilaEstatica de mida 3
@@ -117,9 +141,14 @@ void casProvaMenu(){
                 "Imprimir la posició del top de la pila", 
                 "Sortir"};
     int usuari = -1;
-    PilaEstatica<int> pila;
 
     cout <<"--- Benvigut a la pila ---"<<endl;
+
+    //Demanem N demanera robusta
+    int n = demanarN("Introdueix màxim de la pila");
+    PilaEstatica<int> pila(n);
+    cout << "--- " << "Màxim establert a " << n << " --- "<< endl;
+
     while (usuari != 6){
         try{ usuari  = menu.demanar();
             cout << endl;
@@ -131,6 +160,7 @@ void casProvaMenu(){
                     cin >> nou;
                     if (cin.fail()) throw runtime_error("Ha de ser un enter");
                     pila.anadirElemento(nou);
+                    missatge = "Afegit " + to_string(nou);
                     break;
                 }
                 case 2:{
@@ -140,14 +170,18 @@ void casProvaMenu(){
                     break;
                 }
                 case 3: 
+                    //elementoEncima fa throw si está buida
                     missatge =  "Top element: " + to_string(pila.elementoEncima());
                     break;
                 case 4: 
                     cout << "Pila: ";
                     pila.print();
+                    cout << endl;
                     break;
                 
                 case 5: 
+
+                    if (pila.estaVacia()) throw runtime_error("No hi ha elements a la pila");
                     missatge = "El top es troba a: " + to_string(pila.tamano()-1);
                     break;
                 
@@ -162,7 +196,7 @@ void casProvaMenu(){
                 cin.clear();
                 cin.ignore(1000,'\n');
             }
-            cout << "Error: " << e.what() << endl;
+            cout << "EXCEPTION: " << e.what() << endl;
             usuari = -1;
         }
 
@@ -172,30 +206,25 @@ void casProvaMenu(){
 }
 void casProva2(){
     //Demanem n de manera robusta
-    int n;
     cout << "Hola, sóc el braç robòtic"<< endl;
-    do{
-        cin.clear();
-        cin.ignore(1000,'\n');
-        cout << "Introdueix el nombre de paquets: ";
-        cin >> n;
-    }while(cin.fail() || n < 1);
-    
-    //Inicialitzem les variables
-    PilaEstatica<int> A(n),P(n),B(n);
+    int n = demanarN("Introdueix el nombre de paquets");
 
-    //Omplim 'A'
+    //Fem el vector d'A
+    vector <int> initA;
+    initA.reserve(n);
     for(int i = n; 0 < i; i--)
-        A.anadirElemento(i);
+        initA.push_back(i);
+
+    //Inicialitzem les variables
+    PilaEstatica<int> A(initA),P(n),B(n);
 
     cout << "\nL'estat inicial és el següent:" << endl;
     printEstatSenseMida(A,P,B);
 
     //Fem servir l'argortime donat
-    //Les tres variables extres son per cridar a printEstat
     //Fem try tot i que surtirá bé
     try{
-        logistica(n,A,B,P,A,P,B);
+        logistica(n,A,B,P);
     }
     catch(exception &e){
         cout << "Error: " << e.what();
@@ -203,8 +232,6 @@ void casProva2(){
 
     cout << "\nL'estat final és el següent:" << endl;
     printEstatSenseMida(A,P,B);
-
-
 }
 int main(){
     casProvaEx1();
