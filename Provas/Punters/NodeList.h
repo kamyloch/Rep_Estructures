@@ -1,5 +1,5 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef NODELIST_H
+#define NODELIST_H
 
 using namespace std;
 template <class E>
@@ -7,7 +7,8 @@ template <class E>
 class NodeList{
     public:
         //Constructors
-        NodeList(NodeList<E>*, E, NodeList<E>*);
+        NodeList();
+        NodeList(E);
         virtual ~Node();
     
         //Getters
@@ -31,28 +32,34 @@ class NodeList{
 };
 /*******    Definició de mètodes    *******/
 //Constructor
-template <class E> NodeList<E>::NodeList(NodeList<E>* prev, E element, NodeList<E>*next){
-    this -> _prev = prev;
+template <class E> NodeList<E>::NodeList(){
+    this -> _previous = nullptr;
+    this ->_next = nullptr;
+}
+template <class E> NodeList<E>::NodeList(E element){
+    this -> _previous = nullptr;
     this-> _element = element;
-    this ->_next = next;
+    this ->_next = nullptr;
 }
 
 //Getters
 template <class E> const NodeList<E>* NodeList<E>::accessPrevious()const{
-    return _element;
+    return _previous;
 }
 template <class E> const E& NodeList<E>::accessElement()const{
     return _element;
 }
 template <class E> const NodeList<E>* NodeList<E>::accessNext()const{
-    return _element;
+    return _next;
 }
 
 //Setters
-template <class E> void NodeList<E>:: setPrevious(const NodeList<E>* nouPrev){
+template <class E> 
+void NodeList<E>:: setPrevious(const NodeList<E>* nouPrev){
     this->_prev = prev;
 }
-template <class E> void NodeList<E>:: setNext(const NodeList<E>* nouNext){
+template <class E> 
+void NodeList<E>:: setNext(const NodeList<E>* nouNext){
     this->_next = nouNext;
 }
 //Print

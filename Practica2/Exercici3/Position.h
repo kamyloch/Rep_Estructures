@@ -1,9 +1,13 @@
+//Autor: Camilo Chicaiza Toapanta
 #ifndef POSITION_H
 #define POSITION_H
 #include "NodeList.h"
+#include "LinkedList.h"
 
 template <class Element>
 class Position{
+    // Permite que LinkedList acceda a _node directamente
+    friend class LinkedList<Element>;
     public:
         //Constuctores
         Position(NodeList<Element>* node); //inicialitza la classe Position amb el node que rep com a paràmetre.
@@ -32,38 +36,54 @@ class Position{
         NodeList<Element> * _node;
 };
 /*******    Definició de mètodes    *******/
+//Constructores
 template <class Element> 
-Position<Element> :: Position (NodeList<Element>* node){
-    this->_node = node;
-}
+Position<Element> :: Position (NodeList<Element>* node):_node(node){}
 template <class Element> 
-Position<Element> :: Position (const Position& origen){
-    this->_node = origen._node;
+Position<Element> :: Position (const Position& origen):_node(origen._node){}
+template <class Element>
+Position<Element>::~Position() {
 }
+//Consultores
 template <class Element> 
 Position<Element> Position<Element>::next()const{
-    return this->_node ->accessNext();
+    if(_node ->accessNext() == nullptr)
+        throw out_of_range("El seguent punter está buid");
+    NodeList<Element>* nextNode = this->_node ->accessNext();
+    return Position<Element>(nextNode);
 }
 template <class Element> 
 Position<Element> Position<Element>::previous()const{
-    return this->_node ->accessPrevious();
+    if(_node ->accessPrevious() == nullptr)
+        throw out_of_range("L'anterior punter está buid");
+    NodeList<Element>* prevNode = this->_node ->accessPrevious();
+    return Position<Element>(prevNode);
 }
 template <class Element> 
 const Element& Position<Element>::element()const{
+    if (_node->accessPrevious() == nullptr || _node->accessNext() == nullptr)
+        throw runtime_error("El node fantasma no té element");
     return this->_node ->accessElement();
 }
+
+//Modificadores
 template <class Element> 
 NodeList<Element>* Position<Element>::deletePosition(){
-    NodeList<E>* ant = this-> previous();
-    NodeList<E>* seg = this-> next();
-    if(ant->accessPrevious() != nullptr)
-        this->_node->next()->setPrevious(ant);
+    NodeList<Element>* ant = this-> _node -> accessPrevious();
+    NodeList<Element>* seg = this-> _node -> accessNext();
 
-    if(seg->accessNext() != nullptr)
-        this->_node->previous()->setPrevious(next);
+    //Lo borramos de la cadena
+    if (ant != nullptr)
+        this->_node->accessNext()->setPrevious(ant);
+    if (seg != nullptr)
+        this->_node->accessPrevious()->setNext(seg);
 
-    this -> _node->delete();
-}template <class Element> 
+    //Lo aislamos
+    this->_node->setNext(nullptr);
+    this->_node->setPrevious(nullptr);
+    return this->_node;
+}
+template <class Element> 
 void Position<Element>::setPrevious(NodeList<Element>* node){
     this->_node->setPrevious(node);
 }
@@ -72,20 +92,22 @@ void Position<Element>::setNext(NodeList<Element>* node){
     this->_node->setNext(node);
 }
 template <class Element> 
+
+//Operadores
 Position<Element> Position<Element>::operator++() const{
-    this->_node = accessNext();
+    return this-> next();
 }
 template <class Element> 
 Position<Element> Position<Element>::operator--() const{
-    this->_node = accessPrevious();
+    return this-> previous();
 }
 template <class Element>
 bool Position<Element>:: operator==(const Position<Element> & other) const{
-    return this->_next == other->_node;
+    return this->_node == (other._node);
 }
 template <class Element>
 bool Position<Element>::operator!= (const Position<Element> & other) const{
-    return !(this == other);
+    return !(*this == other);
 }
 template <class Element>
 const Element &  Position<Element>:: operator*() const{

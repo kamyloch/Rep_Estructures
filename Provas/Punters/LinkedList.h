@@ -1,6 +1,7 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 #include <initializer_list>
+#include "Position.h"
 
 using namespace std;
 
@@ -36,18 +37,40 @@ class LinkedList{
 
 /*******    Definició de mètodes    *******/
 //Constructores
-template <class Element> LinkedList<Element> :: LinkedList(){
+template <class Element> 
+LinkedList<Element> :: LinkedList(){
     this->_size = 0;
-    this->_head = nullptr;
-    this->_tail = nullptr;
+    this->_head = new NodeList<Element>();
+    this->_tail = new NodeList<Element>();
+    this->_head->setNext(this->_tail);
+    this->_tail->setPrevious(this->_head);
 }
-template <class Element> LinkedList<Element> :: LinkedList(initializer_list<Element> elements){
+template <class Element> 
+LinkedList<Element> :: LinkedList(initializer_list<Element> elements){
     LinkedList::LinkedList();
-    //Queda por hacer
+    this->_size = elements.size();
+    for(Element x :elements)
+        insertEnd(x);
+}
+template <class Element> LinkedList<Element> ::LinkedList(const LinkedList& origen){
+   this->_size = origen.size();
+   //Por hacer
 }
 
 //Modificadores
 template <class Element> void LinkedList<Element> :: insertBeginning(const Element& element){
+    NodeList<Element>* nouNode = new(element);
+    this->_head-> setPrevious(nouNode);
+    nouNode-> setNext(this->head);
+}
+template <class Element>
+void  LinkedList<Element> ::  insertAfter(Position<Element> & position, const Element& element){
+    NodeList<Element>* nou =  new LinkedList(element);
+    nou -> setPrevious(position);
+    nou -> setNext(position->next());
+    position->next()->setPrevious(nou);
+    position->setNext(nou);
+
 
 }
 
