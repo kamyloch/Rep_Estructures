@@ -2,7 +2,6 @@
 #ifndef POSITION_H
 #define POSITION_H
 #include "NodeList.h"
-#include "LinkedList.h"
 
 template <class Element>
 class Position{

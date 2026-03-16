@@ -3,7 +3,6 @@
 #define LINKEDLIST_H
 #include <initializer_list>
 #include <stdexcept>
-template <class Element> class Position; //No sé perquè em demana aixó
 #include "Position.h"
 #include "NodeList.h"
 
