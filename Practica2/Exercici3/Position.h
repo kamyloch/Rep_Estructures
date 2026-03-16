@@ -7,7 +7,6 @@
 template <class Element>
 class Position{
     // Permèt que LinkedList accedeixi a _node directament
-    friend class LinkedList<Element>;
     public:
         //Constuctores
         Position(NodeList<Element>* node); //inicialitza la classe Position amb el node que rep com a paràmetre.
@@ -85,10 +84,14 @@ NodeList<Element>* Position<Element>::deletePosition(){
 }
 template <class Element> 
 void Position<Element>::setPrevious(NodeList<Element>* node){
+    //Enllaçem node<->this
+    node->setNext(this->_node);
     this->_node->setPrevious(node);
 }
 template <class Element> 
 void Position<Element>::setNext(NodeList<Element>* node){
+    //Enllaçem this<->node
+    node->setPrevious(this->_node);
     this->_node->setNext(node);
 }
 template <class Element> 

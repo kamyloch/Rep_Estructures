@@ -94,35 +94,28 @@ template <class Element>
 void LinkedList<Element> :: insertAfter(Position<Element> & position, const Element& element){
     if (position == end())
         throw out_of_range("No es pot afegir després de end()");
-    //Fem el node nou
+
+    //Fem el node
     NodeList<Element>* nouNode = new NodeList<Element>(element);
-
-    //Agafem el node actual i afegim
-    NodeList<Element>* actual = position._node;
-    nouNode->setPrevious(actual);
-    nouNode->setNext(actual->accessNext());
-
-    //Corregim els enllaços
-    actual->accessNext()->setPrevious(nouNode);
-    actual->setNext(nouNode);
+    Position<Element> seguent = ++position;
+    //Conectem
+    position.setNext(nouNode);
+    seguent.setPrevious(nouNode);
 
     this->_size++;
 }
 template <class Element> 
 void LinkedList<Element> :: insertBefore(Position<Element>& position, const Element& element){
-    if (position._node == _head)
+    if (position == --beginning())
         throw out_of_range("No es pot afegir abands de --beggining()");
-    //Fem el node i el conectem
+    
+    //Fem el node i el d'abans
     NodeList<Element>* nouNode = new NodeList<Element>(element);
+    Position<Element> anterior = --position;
 
-    //Agafem el node actual i afegim
-    NodeList<Element>* actual = position._node;
-    nouNode->setNext(actual);
-    nouNode->setPrevious(actual->accessPrevious());
-
-    //Corregim els enllaços
-    actual->accessPrevious()->setNext(nouNode);
-    actual->setPrevious(nouNode);
+    //Conectem
+    position.setPrevious(nouNode);
+    anterior.setNext(nouNode);
 
     this->_size++;
 }
@@ -140,15 +133,12 @@ void LinkedList<Element> :: insertEnd(const Element& element){
 
 template <class Element> 
 void LinkedList<Element> ::  deletePosition(Position<Element>& position){
-    //Agafem el node actual
-    NodeList<Element>* actual = position._node;
-    if (actual == _head)
+    if (position == --beginning())
         throw runtime_error("No es pot esborrar --beginning()");
-    if( actual == _tail)
+    if(position == end())
         throw runtime_error("No es pot esborrar end()");
     delete position.deletePosition();
     this->_size--;
-    position._node = nullptr;
 }
 
 //Print
@@ -161,8 +151,7 @@ void LinkedList<Element> ::  print() const{
         Position <Element> pos = beginning();
         for (pos; pos != end().previous(); pos = ++pos)
             cout << pos.element() << ", ";
-        cout << pos.element() << "]";
-        cout << endl;
+        cout << pos.element() << "]"<< endl;
     }
 }
 #endif
