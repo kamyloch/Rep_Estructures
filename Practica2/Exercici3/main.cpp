@@ -41,16 +41,14 @@
 using namespace std;
 
 
-//Demana [s/n] a l'usuari
-//No ignora la resta del line (revisa cada char i espera per [s/S/n/N])
+//Demana [s/n] a l'usuari de manera robusta
 char demanaSN(string missatge = "Digues"){
-    char usuari = 'x';
-    while (usuari != 's' && usuari != 'n'){
+    string usuari = "";
+    while (usuari != "s" && usuari != "n"){
         cout << missatge << " (s/n) ";
         cin >> usuari;
-        usuari = tolower(usuari);
     }
-    return usuari;
+    return usuari[0];
 }
 
 //Demana de manera robusta un integer
