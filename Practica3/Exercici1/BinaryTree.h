@@ -35,6 +35,9 @@ class BinaryTree {
 
     private:
         int _size;
+        Position<Key, Value>* search (Key) const;
+        Position<Key, Value>* search_rec (Position<Key, Value>*, Key) const;
+
         /* Mètodes auxiliars definiu aquí els que necessiteu */
 };
 #endif
