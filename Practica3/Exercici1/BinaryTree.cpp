@@ -200,7 +200,7 @@ void BinaryTree<Key, Value>:: print(bool sencer) const{
     int amplada = pow(2,h- 1)*4;
 
 
-    cout << center("  --- Amplada del abre: " + to_string(amplada/4) + " ---", amplada) << endl;
+    cout << center("  --- Tamany : " + to_string(size()) + " ---", amplada) << endl;
 
     //Recorregur de amplada amb cua com vist a teoria
     queue <Position<Key, Value>*> cua;
