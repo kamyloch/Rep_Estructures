@@ -2,6 +2,8 @@
 #define BINARY_TREE_H
 #include <iostream>
 #include <stdexcept>
+#include <string>
+#include <vector>
 #include "Position.h"
 using namespace std;
 
@@ -29,7 +31,11 @@ class BinaryTree {
         void printPreOrder(const Position<Key, Value> *node = nullptr) const;
         void printPostOrder(const Position<Key, Value> *node = nullptr) const;
         bool identicalTree(const BinaryTree<Key, Value>& other) const;
-    
+        //Extra
+        //Completa a un arbre perfecte llavors la complexitat es O(2^n) si es una arbre lineal
+        //Sino llavors es O(n) si ja es un arbre perfecte
+        //Si es true imprime l'abre completat a perfecte amb nodes buits
+        void print(bool b =  false) const;
     protected:
         Position<Key, Value>* root;
 
@@ -37,7 +43,11 @@ class BinaryTree {
         int _size;
         Position<Key, Value>* search (Key) const;
         Position<Key, Value>* search_rec (Position<Key, Value>*, Key) const;
+        void copy_rec (const Position<Key, Value>&, Position<Key, Value>*);
+        bool identical_rec (const Position<Key, Value>*,const Position<Key, Value>*) const;
 
-        /* Mètodes auxiliars definiu aquí els que necessiteu */
+        //Per imprimir l'abre
+        string center(string cad,  int n) const;
 };
+#include "BinaryTree.cpp"
 #endif

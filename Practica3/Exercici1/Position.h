@@ -15,7 +15,6 @@ class Position {
         void setLeft(Position<Key,Value>*);
         void setRight(Position<Key,Value>*);
         void setParent(Position<Key,Value>*);
-        void addValue(Value);
 
         /* Consultors */
         const Key& getKey() const;
@@ -43,11 +42,12 @@ class Position {
     private:
         Key key;
         vector<Value> values;        
-        Position<Key,Value>* rigth;
+        Position<Key,Value>* right;
         Position<Key,Value>* left;
         Position<Key,Value>* pare;
 
         /* Auxiliars */
         int height_rec(const Position<Key, Value>*) const;
 };
+#include "Position.cpp"
 #endif
