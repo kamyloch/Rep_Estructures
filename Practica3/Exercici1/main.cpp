@@ -52,7 +52,6 @@ int main(){
         for (int i = 0; i < 10; i++)
             t.insert(rand() % 101,1);
         t.print(true);
-        t.print();
     }
 
 
