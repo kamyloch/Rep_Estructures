@@ -42,17 +42,35 @@ void mainExercici1(){
     tree1.print();
 }
 
-int main(){
-    mainExercici1();
-    
-    cout << "Prova del metode print" << endl;
+BinaryTree<int,int> interactiu (){
+    cout << "   ---  Arbre buit ---" << endl;
+    BinaryTree<int,int> arbre;
+    int nou;
+    while (!cin.fail()){
+        cout << "Nou element: ";
+        cin >> nou;
+        arbre.insert(nou,1);
+        arbre.print();
+    }
+    cin.clear();
+    cin.ignore(1000,'\n');
+
+    return arbre;
+}
+void randomProva(int elements = 10){
+    cout << "Prova del metode print amb " << elements << " valors random";
+    //string testKeys[] = {"el", "hijo", "de", "rana", "rinrin","rana" , "rana", "salio"};
     for (int i = 0; i < 5; i++){
         cout<< endl<< "Abre #"<< i << endl;
         BinaryTree<int,int> t;
-        for (int i = 0; i < 10; i++)
-            t.insert(rand() % 101,1);
+        for (int i = 0; i < elements; i++)
+            t.insert(rand() % 1001,1);
         t.print(true);
     }
+}
 
-
+int main(){
+    mainExercici1();
+    randomProva();
+    interactiu();
 }

@@ -48,6 +48,7 @@ class BinaryTree {
 
         //Per imprimir l'abre
         string center(string cad,  int n) const;
+        string convert_str(const Key& value)const;
 };
 #include "BinaryTree.cpp"
 #endif

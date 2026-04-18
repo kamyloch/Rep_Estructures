@@ -3,6 +3,7 @@
 //Para el print
 #include <cmath>
 #include <queue>
+#include <sstream>
 
 
 /*  --------   Definició de Mètodes  --------   */
@@ -182,6 +183,13 @@ bool BinaryTree<Key, Value>:: identical_rec (const Position<Key, Value>* org,con
 }
 
 /* Extra */
+
+template <class Key, class Value>
+string BinaryTree<Key, Value>:: convert_str(const Key& value) const{
+    stringstream ss;
+    ss << value;
+    return ss.str();
+}
 template <class Key, class Value>
 void BinaryTree<Key, Value>:: print(bool sencer) const{
     if(isEmpty()){ 
@@ -200,7 +208,7 @@ void BinaryTree<Key, Value>:: print(bool sencer) const{
     int amplada = pow(2,h- 1)*4;
 
 
-    cout << center("  --- Tamany : " + to_string(size()) + " ---", amplada) << endl;
+    cout << center("  --- Nodes : " + to_string(size()) + " ---", amplada) << endl;
 
     //Recorregur de amplada amb cua com vist a teoria
     queue <Position<Key, Value>*> cua;
@@ -226,7 +234,7 @@ void BinaryTree<Key, Value>:: print(bool sencer) const{
         
         //Sino agafem la key del node i la imprimeix
         else{
-            key = to_string(top->getKey());
+            key = convert_str(top->getKey());
             if (key.size() <2) key = " " + key;//Fixa que les keys de 1 carècter ocupin 2 chars
             cout << center(key,amplada);
         }
