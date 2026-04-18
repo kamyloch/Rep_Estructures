@@ -64,8 +64,8 @@ void randomProva(int elements = 10){
         cout<< endl<< "Abre #"<< i << endl;
         BinaryTree<int,int> t;
         for (int i = 0; i < elements; i++)
-            t.insert(rand() % 1001,1);
-        t.print(true);
+            t.insert(rand() % 101,1);
+        t.print();
     }
 }
 

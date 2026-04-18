@@ -59,32 +59,26 @@ template <class Key, class Value>
 bool Position<Key, Value>:: isLeaf() const{ return left == nullptr && right == nullptr;}
 template <class Key, class Value>
 int Position<Key, Value>:: depth() const{
-    const Position<Key,Value>* itr = this;
-    int depth = 0;
-    while(!(itr->isRoot())){
-        itr = itr->getParent();
-        depth ++;
-    }
-    return depth;
+    if (isRoot()) return 0;
+
+    return getParent() -> depth()+1;
 }
 template <class Key, class Value>
-int Position<Key, Value>:: height() const{
-    return height_rec(this);
-}
-template <class Key, class Value>
-int Position<Key, Value>:: height_rec(const Position<Key, Value>* node) const{
-    if (node == nullptr) throw runtime_error("El node es ∅");
-    if (node->isLeaf()) return 1;
+int Position<Key, Value>:: height() const{   
+    //return height_rec(this);
+    if(isLeaf()) return 1;
+
+    int izq=0, der=0;
     
-    int izq = 0, der = 0;
-    if (node->getLeft() != nullptr)
-        izq = height_rec(node->getLeft()) + 1;
-    if (node->getRight() != nullptr)
-        der = height_rec(node->getRight()) + 1;
+    if (getLeft() != nullptr)
+        izq = getLeft()->height()+1;
+
+    if (getRight() != nullptr)
+        der = getRight()->height()+1;
     
-    if (izq < der)
-        return der;
-    return izq;
+    if (izq > der)
+        return izq;
+    return der;
 }
 template <class Key, class Value>
 bool Position<Key, Value>:: operator==(const Position<Key, Value>& other) const{

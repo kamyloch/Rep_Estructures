@@ -45,9 +45,6 @@ class Position {
         Position<Key,Value>* right;
         Position<Key,Value>* left;
         Position<Key,Value>* pare;
-
-        /* Auxiliars */
-        int height_rec(const Position<Key, Value>*) const;
 };
 #include "Position.cpp"
 #endif
