@@ -15,33 +15,42 @@ class BinaryTree {
         virtual ~BinaryTree();
 
         /* Modificadors */
-        virtual Position<Key, Value>* insert(const Key& key, const Value& value);
+        virtual Position<Key, Value>* insert(const Key& key, const Value& value); //O(log n)
 
         /* Consultors */
         Position<Key, Value>* getRoot() const;
         const vector<Value>& getValues(const Key& key) const;
         int size() const;
+        Position<Key, Value>* search (Key) const; //O(log n)
 
         /* Operacions */
-        bool isEmpty() const;
-        int height() const;
-        bool contains(const Key& key) const;
+        bool isEmpty() const; //O(1)
+        int height() const; //O(n)
+        bool contains(const Key& key) const; // O(log n)
         
         /* Prints */
+        //Complexitat O(n)
         void printPreOrder(const Position<Key, Value> *node = nullptr) const;
         void printPostOrder(const Position<Key, Value> *node = nullptr) const;
         bool identicalTree(const BinaryTree<Key, Value>& other) const;
+
+
         //Extra
-        //Completa a un arbre perfecte llavors la complexitat es O(2^n) si es una arbre lineal
-        //Sino llavors es O(n) si ja es un arbre perfecte
-        //Si es true imprime l'abre completat a perfecte amb nodes buits
+        /*
+        Completa a un arbre perfecte llavors la complexitat es O(2^n) si es una arbre lineal
+        Sino llavors es O(n) si ja es un arbre perfecte
+
+        Si es true imprime l'abre completat a perfecte amb nodes buits
+        4 es l'espai maxim es per imprimir els nodes mes petits
+        Cada nivell desde l'ultim te el doble d'espai que l'anterior
+        */
         void print(bool b =  false) const;
     protected:
         Position<Key, Value>* root;
 
     private:
         int _size;
-        Position<Key, Value>* search (Key) const;
+        /* Recursivitats */
         Position<Key, Value>* search_rec (Position<Key, Value>*, Key) const;
         void copy_rec (const Position<Key, Value>&, Position<Key, Value>*);
         bool identical_rec (const Position<Key, Value>*,const Position<Key, Value>*) const;

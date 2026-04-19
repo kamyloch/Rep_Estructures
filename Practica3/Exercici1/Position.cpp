@@ -6,8 +6,8 @@
 template <class Key, class Value>
 Position<Key, Value>::Position(const Key key):
     key(key),
-    right(nullptr),
-    left(nullptr),
+    dreta(nullptr),
+    esquerra(nullptr),
     pare(nullptr)
 {}
 template <class Key, class Value>
@@ -18,8 +18,8 @@ Position<Key, Value>::Position(const Position<Key, Value>& orig):
 template <class Key, class Value>
 Position<Key, Value>::~Position(){
     //Destruim els fills abans de destruitme 
-    Position<Key, Value>* izq = this->getLeft();
-    Position<Key, Value>* der = this->getRight();
+    Position<Key, Value>* izq = this->left();
+    Position<Key, Value>* der = this->right();
     if (izq != nullptr){
         izq ->setParent(nullptr);
         delete izq;
@@ -32,9 +32,9 @@ Position<Key, Value>::~Position(){
 
 /* Modificadors */
 template <class Key, class Value>
-void Position<Key, Value>::setLeft(Position<Key,Value>* p){ left = p;}
+void Position<Key, Value>::setLeft(Position<Key,Value>* p){ esquerra = p;}
 template <class Key, class Value>
-void Position<Key, Value>::setRight(Position<Key,Value>* p){ right = p;}
+void Position<Key, Value>::setRight(Position<Key,Value>* p){ dreta = p;}
 template <class Key, class Value>
 void Position<Key, Value>::setParent(Position<Key,Value>* p){ pare = p;}
 template <class Key, class Value>
@@ -46,22 +46,22 @@ const Key&  Position<Key, Value>:: getKey() const { return key;}
 template <class Key, class Value>
 const vector<Value>& Position<Key, Value>:: getValues() const { return values;}
 template <class Key, class Value>
-Position<Key,Value>* Position<Key, Value>::getLeft() const{ return left;}
+Position<Key,Value>* Position<Key, Value>::left() const{ return esquerra;}
 template <class Key, class Value>
-Position<Key,Value>* Position<Key, Value>::getRight() const{ return right;}
+Position<Key,Value>* Position<Key, Value>::right() const{ return dreta;}
 template <class Key, class Value>
-Position<Key,Value>* Position<Key, Value>::getParent() const{ return pare;}
+Position<Key,Value>* Position<Key, Value>::parent() const{ return pare;}
 
 /* Operacions */
 template <class Key, class Value>
 bool Position<Key, Value>:: isRoot() const{ return pare == nullptr;}
 template <class Key, class Value>
-bool Position<Key, Value>:: isLeaf() const{ return left == nullptr && right == nullptr;}
+bool Position<Key, Value>:: isLeaf() const{ return esquerra == nullptr && dreta == nullptr;}
 template <class Key, class Value>
 int Position<Key, Value>:: depth() const{
     if (isRoot()) return 0;
 
-    return getParent() -> depth()+1;
+    return parent() -> depth()+1;
 }
 template <class Key, class Value>
 int Position<Key, Value>:: height() const{   
@@ -70,11 +70,11 @@ int Position<Key, Value>:: height() const{
 
     int izq=0, der=0;
     
-    if (getLeft() != nullptr)
-        izq = getLeft()->height()+1;
+    if (left() != nullptr)
+        izq = left()->height()+1;
 
-    if (getRight() != nullptr)
-        der = getRight()->height()+1;
+    if (right() != nullptr)
+        der = right()->height()+1;
     
     if (izq > der)
         return izq;

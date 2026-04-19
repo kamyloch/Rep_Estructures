@@ -22,29 +22,6 @@ BinaryTree<Key, Value>::BinaryTree(const BinaryTree<Key, Value>& orig): BinaryTr
 
     
 }
-
-template <class Key, class Value>
-void BinaryTree<Key, Value>::copy_rec (const Position<Key, Value>& org, Position<Key, Value>* nou){
-    if (nou == nullptr)
-        throw runtime_error("Aquest node hauria de estar creat");
-    Position<Key, Value>* izq = org.getLeft();
-    Position<Key, Value>* der = org.getRight();
-
-    if (izq != nullptr){
-        Position<Key, Value>* nouIzq = new Position<Key, Value>(*izq);
-        nou->setLeft(nouIzq);
-        nouIzq->setParent(nou);
-        _size++;
-        copy_rec(*izq,nouIzq);
-    }
-    if (der != nullptr){
-        Position<Key, Value>* nouDer = new Position<Key, Value>(*der);
-        nou->setRight(nouDer);
-        nouDer->setParent(nou);
-        _size++;
-        copy_rec(*der,nouDer);
-    }
-}
 template <class Key, class Value>
 BinaryTree<Key, Value>::~BinaryTree(){
     if (root != nullptr)
@@ -68,9 +45,9 @@ Position<Key, Value>* BinaryTree<Key, Value>:: insert(const Key& key, const Valu
     while (itr != nullptr && !trobat){
         itrPare = itr;
         if (itr->getKey()< key)
-            itr = itr->getRight();
+            itr = itr->right();
         else if (itr->getKey()> key)
-            itr = itr->getLeft();
+            itr = itr->left();
         else 
             trobat = true;
     }
@@ -107,17 +84,7 @@ const vector<Value>& BinaryTree<Key, Value>:: getValues(const Key& key) const {
         throw out_of_range("No hi es aquesta clau");
 }
 template <class Key, class Value>
-Position<Key, Value>* BinaryTree<Key, Value>:: search_rec (Position<Key, Value>* node, Key key) const{
-    if (node == nullptr) 
-        return nullptr;
-    if (node->getKey()< key)
-        return search_rec(node->getRight(),key);
-    if (node->getKey()> key)
-        return search_rec(node->getLeft(),key);
-    return node;
-}
-template <class Key, class Value>
-Position<Key, Value>* BinaryTree<Key, Value>:: search (Key key) const{ 
+Position<Key, Value>* BinaryTree<Key, Value>:: search (Key key) const{ //Recursivament
     return search_rec(this->root, key);
 }
 
@@ -127,13 +94,23 @@ bool BinaryTree<Key, Value>::isEmpty() const{
     return root == nullptr;
 }
 template <class Key, class Value>
-int BinaryTree<Key, Value>::height() const {
+int BinaryTree<Key, Value>::height() const { //Recursivament
     if (isEmpty()) throw out_of_range("L'abre está buid");
     return getRoot()->height();
 }
 template <class Key, class Value>
-bool BinaryTree<Key, Value>::contains(const Key& key) const{
-    return search(key) == nullptr;
+bool BinaryTree<Key, Value>::contains(const Key& key) const{ //Iterativament
+    const Position<Key, Value>* itr = getRoot();
+    bool trobat = false;
+
+    while(!trobat && itr != nullptr){
+        if (key > itr->getKey())
+            itr = itr->right();
+        if (key < itr->getKey())
+            itr = itr->left();
+        trobat = true;
+    }
+    return trobat;
 }
 
 
@@ -145,30 +122,64 @@ void BinaryTree<Key, Value>::printPreOrder(const Position<Key, Value> *node) con
     if (node == nullptr) node = root;
 
     cout << node->getKey() << ", ";
-    if (node->getLeft() != nullptr)
-        printPreOrder(node->getLeft());
-    if (node->getRight() != nullptr)
-        printPreOrder(node->getRight());
+    if (node->left() != nullptr)
+        printPreOrder(node->left());
+    if (node->right() != nullptr)
+        printPreOrder(node->right());
 }
 template <class Key, class Value>
 void BinaryTree<Key, Value>::printPostOrder(const Position<Key, Value> *node) const{
     if (isEmpty()) return;
     if (node == nullptr) node = root;
 
-    if (node->getLeft() != nullptr)
-        printPostOrder(node->getLeft());
-    if (node->getRight() != nullptr)
-        printPostOrder(node->getRight());
+    if (node->left() != nullptr)
+        printPostOrder(node->left());
+    if (node->right() != nullptr)
+        printPostOrder(node->right());
     cout << node->getKey() << ", ";
 
 }
 template <class Key, class Value>
 bool BinaryTree<Key, Value>:: identicalTree(const BinaryTree<Key, Value>& other) const{
-    if (other.size() != this->size())
-        return false;
-    if (isEmpty())
-        return true;
+
     return identical_rec(other.getRoot(),root);
+}
+
+
+/* Recursivitats */
+
+template <class Key, class Value>
+void BinaryTree<Key, Value>::copy_rec (const Position<Key, Value>& org, Position<Key, Value>* nou){
+    if (nou == nullptr)
+        throw runtime_error("Aquest node hauria de estar creat");
+    Position<Key, Value>* izq = org.left();
+    Position<Key, Value>* der = org.right();
+
+    if (izq != nullptr){
+        Position<Key, Value>* nouIzq = new Position<Key, Value>(*izq);
+        nou->setLeft(nouIzq);
+        nouIzq->setParent(nou);
+        _size++;
+        copy_rec(*izq,nouIzq);
+    }
+    if (der != nullptr){
+        Position<Key, Value>* nouDer = new Position<Key, Value>(*der);
+        nou->setRight(nouDer);
+        nouDer->setParent(nou);
+        _size++;
+        copy_rec(*der,nouDer);
+    }
+}
+
+template <class Key, class Value>
+Position<Key, Value>* BinaryTree<Key, Value>:: search_rec (Position<Key, Value>* node, Key key) const{
+    if (node == nullptr) 
+        return nullptr;
+    if (node->getKey()< key)
+        return search_rec(node->right(),key);
+    if (node->getKey()> key)
+        return search_rec(node->left(),key);
+    return node;
 }
 
 template <class Key, class Value>
@@ -177,10 +188,13 @@ bool BinaryTree<Key, Value>:: identical_rec (const Position<Key, Value>* org,con
         return true;
     if (org == nullptr || act == nullptr)
         return false;
-    if(!(*org == *act))
+    if(org->getKey() != act->getKey())
         return false;
-    return identical_rec (org->getLeft(),act->getLeft()) && identical_rec (org->getRight(),act->getRight());
+    return identical_rec (org->left(),act->left()) && identical_rec (org->right(),act->right());
 }
+
+
+
 
 /* Extra */
 
@@ -203,14 +217,14 @@ void BinaryTree<Key, Value>:: print(bool sencer) const{
         return;
     }
 
+    cout << "  --- Nodes : " + to_string(size()) + " ---"<< endl;
+
     //Amplada maxima para centrar de manera que abajo quede xx--xx--xx--....
     //xx-- son cuatro caracteres, y sabemos que habran 2^h elementos (h = alçada)
     int amplada = pow(2,h- 1)*4;
 
 
-    cout << center("  --- Nodes : " + to_string(size()) + " ---", amplada) << endl;
-
-    //Recorregur de amplada amb cua com vist a teoria
+    //Recorregut d'amplada amb cua com vist a teoria
     queue <Position<Key, Value>*> cua;
 
     //Comencem amb el root
@@ -218,40 +232,36 @@ void BinaryTree<Key, Value>:: print(bool sencer) const{
 
     //Variables auxialiars
     Position<Key, Value>* top;
-    string key;
 
     int nivell = 0;
     int fets = 0;
-    //4 es un element, en 2 ja no hauria de fer print
-    while (amplada > 2){
+    //4 espai_minim es un element, en 2 ja no hauria de fer print
+    while (amplada >= 4){
         //Agafem el front
         top = cua.front();
         
         //Si es null imprimeix l'espai
-        if (top == nullptr){
+        if (top == nullptr)
             cout << center(sencer? "--" : "  ",amplada);
-        }
         
         //Sino agafem la key del node i la imprimeix
-        else{
-            key = convert_str(top->getKey());
-            if (key.size() <2) key = " " + key;//Fixa que les keys de 1 carècter ocupin 2 chars
-            cout << center(key,amplada);
-        }
+        else
+            cout << center(convert_str(top->getKey()),amplada);
+    
         //Treiem l'imprès
         cua.pop();
+        fets++;
 
-        //Si es null fiquem mes nuls
+        //Si es null fiquem mes nuls per completar a un arbre perfecte
         if (top == nullptr){
             cua.push(nullptr);
             cua.push(nullptr);
         }
         //Sino els corespondents
         else{
-            cua.push(top->getLeft());
-            cua.push(top->getRight());
+            cua.push(top->left());
+            cua.push(top->right());
         }
-        fets++;
 
         /*
           Los numeros de la forma si k = 2^(n+1) -1 son  k = 01111111
@@ -266,17 +276,22 @@ void BinaryTree<Key, Value>:: print(bool sencer) const{
             //Salt
             amplada /= 2;
             cout << endl;
-            if (amplada<3) continue;
 
+            //Atura a l'ultim nivell
+            if (amplada<3) continue;
+            
+
+            //Palitos que conecten els nodes
             int num_Nodes= pow(2,nivell);
 
-            //Palitos
+            //Per a cada node del nivell imprimin els palets a sota de cada node
             if (sencer){
                 for(int i = 0; i < num_Nodes; i++)
                     cout << center(" /", amplada) << center("\\ ", amplada);
             }
             //Aportacio per !sencer de gemini
             else{
+                //Clon de la cua
                 queue<Position<Key, Value>*> copia = cua;
             
                 //Per cada node del nivell actual
@@ -285,10 +300,10 @@ void BinaryTree<Key, Value>:: print(bool sencer) const{
                     Position<Key, Value>* izq = copia.front(); copia.pop();
                     Position<Key, Value>* der = copia.front(); copia.pop();
 
-                    //Fem les branques
-                    string ramaIzq = (izq != nullptr) ? " /" : "  ";
-                    string ramaDer = (der != nullptr) ? "\\ " : "  ";
-                    cout << center(ramaIzq, amplada)<< center(ramaDer, amplada);
+                    //Fem les branques si hi ha fill
+                    string brancaIzq = (izq != nullptr) ? " /" : "  ";
+                    string brancaDer = (der != nullptr) ? "\\ " : "  ";
+                    cout << center(brancaIzq, amplada)<< center(brancaDer, amplada);
             }
         }
             cout << endl;
@@ -298,8 +313,10 @@ void BinaryTree<Key, Value>:: print(bool sencer) const{
 }
 template <class Key, class Value>
 string BinaryTree<Key, Value>:: center(string cad,int n) const{
+    if (n == 0) return "";
     int espacio = n - cad.size();
-    if (espacio <= 0) return cad;
+    if (espacio == 0) return cad;
+    if (espacio < 0) return cad.substr(0, n-1) + "-";
 
     int izq = espacio/2;
     int der = espacio - izq;

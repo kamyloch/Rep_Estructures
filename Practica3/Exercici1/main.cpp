@@ -42,19 +42,19 @@ void mainExercici1(){
     tree1.print();
 }
 
-BinaryTree<int,int> interactiu (){
+BinaryTree<string,int> interactiu (){
     cout << "   ---  Arbre buit ---" << endl;
-    BinaryTree<int,int> arbre;
-    int nou;
-    while (!cin.fail()){
+    cout << "---  Type 'adeu' for ending --- " << endl;
+    BinaryTree<string,int> arbre;
+    string nou = "";
+    while (nou != "adeu"){
         cout << "Nou element: ";
         cin >> nou;
-        arbre.insert(nou,1);
-        arbre.print();
+        if (nou != "adeu"){
+            arbre.insert(nou,1);
+            arbre.print(false);
+        }
     }
-    cin.clear();
-    cin.ignore(1000,'\n');
-
     return arbre;
 }
 void randomProva(int elements = 10){
@@ -65,12 +65,12 @@ void randomProva(int elements = 10){
         BinaryTree<int,int> t;
         for (int i = 0; i < elements; i++)
             t.insert(rand() % 101,1);
-        t.print();
+        t.print(true);
     }
 }
 
 int main(){
-    mainExercici1();
-    randomProva();
+    //mainExercici1();
+    //randomProva();
     interactiu();
 }

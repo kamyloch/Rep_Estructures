@@ -19,9 +19,9 @@ class Position {
         /* Consultors */
         const Key& getKey() const;
         const vector<Value>& getValues() const;
-        Position<Key,Value>* getLeft() const;
-        Position<Key,Value>* getRight() const;
-        Position<Key,Value>* getParent() const;
+        Position<Key,Value>* left() const;
+        Position<Key,Value>* right() const;
+        Position<Key,Value>* parent() const;
 
         /* Operacions */
         bool isRoot() const;
@@ -42,8 +42,8 @@ class Position {
     private:
         Key key;
         vector<Value> values;        
-        Position<Key,Value>* right;
-        Position<Key,Value>* left;
+        Position<Key,Value>* dreta;
+        Position<Key,Value>* esquerra;
         Position<Key,Value>* pare;
 };
 #include "Position.cpp"
