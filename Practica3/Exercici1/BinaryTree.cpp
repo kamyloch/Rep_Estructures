@@ -106,9 +106,10 @@ bool BinaryTree<Key, Value>::contains(const Key& key) const{ //Iterativament
     while(!trobat && itr != nullptr){
         if (key > itr->getKey())
             itr = itr->right();
-        if (key < itr->getKey())
+        else if (key < itr->getKey())
             itr = itr->left();
-        trobat = true;
+        else
+            trobat = true;
     }
     return trobat;
 }
