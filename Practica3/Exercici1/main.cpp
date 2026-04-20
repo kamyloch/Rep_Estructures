@@ -1,20 +1,7 @@
 #include "BinaryTree.h"
-#include <stdexcept>
 #include <iostream>
-#include <cstdlib>
 #include "Position.h"
 using namespace std;
-/* Mapa mental:
-              02
-        /             \        
-      00              08  
-   /      \        /      \
-  --      --      05      45
- /  \    /  \    /  \    /  \ 
---  --  --  --  03  --  40  76 
-
-*/
-
 void mainExercici1(){
     BinaryTree<int, int> tree1;
     int testKeys[] = {2, 0, 8, 45, 76, 5, 3, 40};
@@ -59,7 +46,6 @@ BinaryTree<string,int> interactiu (){
 }
 void randomProva(int elements = 10){
     cout << "Prova del metode print amb " << elements << " valors random";
-    //string testKeys[] = {"el", "hijo", "de", "rana", "rinrin","rana" , "rana", "salio"};
     for (int i = 0; i < 5; i++){
         cout<< endl<< "Abre #"<< i << endl;
         BinaryTree<int,int> t;
@@ -69,8 +55,33 @@ void randomProva(int elements = 10){
     }
 }
 
+void provaMetodesArbre(){
+    BinaryTree<int, int> tree;
+    int testKeys[] =   {2, 0, 8, 45, 76, 5, 3, 40};
+    int testValues[] = {5, 5, 1, 88, 99, 12, 9, 11};
+    for (int i = 0; i < 8 ; i++)
+        tree.insert(testKeys[i], testValues[i]);
+    /* Hauriem de tindre aquest arbre
+                   2                
+        /              \        
+       0               8        
+                    /      \    
+                   5       45   
+                  /       /  \  
+                 3       40  76 
+    */
+    
+    cout << "Root "     << ((tree.getRoot()->getKey() == 2)?         "be" : "malament") << endl; 
+    cout << "Search "   << ((tree.search(76)->getValues()[0] == 99)? "be" : "malament") << endl;
+    cout << "Size "     << ((tree.size() == 8)?                      "be" : "malament") << endl;
+    cout << "Empty "    << ((tree.isEmpty() == false)?               "be" : "malament") << endl;
+    cout << "Height "   << ((tree.height() == 4)?                    "be" : "malament") << endl;
+    cout << "Contains " << ((tree.contains(100) == false)?           "be" : "malament") << endl;
+
+}
 int main(){
-    //mainExercici1();
-    //randomProva();
+    mainExercici1();
+    randomProva();
+    provaMetodesArbre();
     interactiu();
 }
