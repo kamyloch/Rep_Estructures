@@ -52,6 +52,8 @@ class BinaryTree {
         */
         void print(bool b =  false) const;
         void mirror();
+        int countLeaves() const;
+        void clear();
     protected:
         Position<Key, Value>* root;
 
@@ -261,7 +263,6 @@ bool BinaryTree<Key, Value>:: identical_rec (const Position<Key, Value>* org,con
 
 
 /* Extra */
-
 template <class Key, class Value>
 string BinaryTree<Key, Value>:: convert_str(const Key& value) const{
     stringstream ss;
@@ -387,4 +388,25 @@ string BinaryTree<Key, Value>:: center(string cad,int n) const{
 
     return string(izq,' ') + cad + string(der,' ');
 }
-#endif
+
+template <class Key, class Value>
+void BinaryTree<Key, Value>::mirror(){
+    if (!isEmpty())
+        getRoot()->mirror();
+}
+template <class Key, class Value>
+int BinaryTree<Key, Value>::countLeaves() const{
+    if (isEmpty()) throw out_of_range("Arbre buit");
+
+    return getRoot()->countLeaves();
+}
+
+template <class Key, class Value>
+
+void BinaryTree<Key, Value>::clear() {
+    if (isEmpty()) return;
+    delete getRoot();
+    _size = 0;
+}
+
+#endif  

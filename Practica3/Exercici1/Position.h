@@ -1,3 +1,9 @@
+/*
+CPP?
+Identical tree values?
+Size?
+*/
+
 #ifndef POSITION_H
 #define POSITION_H
 #include <stdexcept>
@@ -40,8 +46,10 @@ class Position {
         bool operator==(const Position<Key, Value>& other) const;
 
         /* Extra */
-        /*Suposem que es de cerca binaria per */
+        /* n = numero de nodes a l'abre
+        El cost es linieal sempre O(n)*/
         void mirror();
+        int countLeaves() const;
 
     private:
         Key key;
@@ -141,10 +149,24 @@ template <class Key, class Value>
 void Position<Key, Value>::mirror(){
     Position<Key, Value>* aux = left();
     setLeft(right());
-    setRight(left());
+    setRight(aux);
     if(left() != nullptr)
         left()->mirror();
     if(right() != nullptr)
         right()->mirror();
+}
+template <class Key, class Value>
+int Position<Key, Value>::countLeaves() const{
+    if (isLeaf())
+        return 1;
+    int izq = 0;
+    int der = 0;
+    
+    if(left() != nullptr)
+        izq = left()-> countLeaves();
+    if(right() != nullptr)
+        der = right()->countLeaves();
+    
+    return izq + der;
 }
 #endif

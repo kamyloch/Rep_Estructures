@@ -37,10 +37,13 @@ BinaryTree<string,int> interactiu (){
     while (nou != "adeu"){
         cout << "Nou element: ";
         cin >> nou;
-        if (nou != "adeu"){
+        if (nou == "mirror")
+            arbre.mirror();
+        else if (nou == "leaves")
+            cout << "Hi han " << arbre.countLeaves()<< " fullas" << endl;
+        else if (nou != "adeu")
             arbre.insert(nou,1);
-            arbre.print(false);
-        }
+        arbre.print();
     }
     return arbre;
 }
@@ -80,8 +83,8 @@ void provaMetodesArbre(){
 
 }
 int main(){
-    mainExercici1();
-    randomProva();
-    provaMetodesArbre();
+    //mainExercici1();
+    //randomProva();
+    //provaMetodesArbre();
     interactiu();
 }
