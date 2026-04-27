@@ -83,8 +83,8 @@ void provaMetodesArbre(){
 
 }
 int main(){
-    //mainExercici1();
+    mainExercici1();
     //randomProva();
     //provaMetodesArbre();
-    interactiu();
+    //interactiu();
 }

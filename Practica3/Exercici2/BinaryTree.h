@@ -187,7 +187,7 @@ void BinaryTree<Key, Value>::printPreOrder(const Position<Key, Value> *node) con
     if (isEmpty()) return;
     if (node == nullptr) node = root;
 
-    cout << node->getKey() << " ";
+    cout << node->getKey() << ", ";
     if (node->left() != nullptr)
         printPreOrder(node->left());
     if (node->right() != nullptr)
@@ -202,7 +202,7 @@ void BinaryTree<Key, Value>::printPostOrder(const Position<Key, Value> *node) co
         printPostOrder(node->left());
     if (node->right() != nullptr)
         printPostOrder(node->right());
-    cout << node->getKey() << " ";
+    cout << node->getKey() << ", ";
 
 }
 template <class Key, class Value>
