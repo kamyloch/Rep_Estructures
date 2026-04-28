@@ -1,9 +1,3 @@
-/*
-CPP?
-Identical tree values?
-Size?
-*/
-
 #ifndef POSITION_H
 #define POSITION_H
 #include <stdexcept>

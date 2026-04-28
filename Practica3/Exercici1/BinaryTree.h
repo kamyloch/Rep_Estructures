@@ -254,11 +254,7 @@ bool BinaryTree<Key, Value>:: identical_rec (const Position<Key, Value>* org,con
         return true;
     if (org == nullptr || act == nullptr)
         return false;
-<<<<<<< HEAD
     if(org->getKey() != act->getKey() || org->getValues() != act->getValues())
-=======
-    if(org->getKey() != act->getKey() && org->getValues() != act->getValues())
->>>>>>> f4bf043 (ultimex1)
         return false;
     return identical_rec (org->left(),act->left()) && identical_rec (org->right(),act->right());
 }
