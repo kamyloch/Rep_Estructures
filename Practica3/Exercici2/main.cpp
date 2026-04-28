@@ -1,5 +1,6 @@
 #include "WordIndexer.h"
 #include "Menu.h"
+#include "Position.h"
 #include <chrono>
 #include <fstream>
 #include <iostream>
@@ -13,7 +14,7 @@ int main(){
                     "Sortir"};
     int user;
     WordIndexer* wordId = nullptr;
-    do{
+    do{try{
 
         user = opcions.demanar("Gestió de paraules");
 
@@ -36,9 +37,10 @@ int main(){
             }
             case 2:{
                 if (wordId == nullptr)
-                    cout << "Encara está buid"<<endl;
-                else
+                    cout << "Encara está buit"<<endl;
+                else{
                     wordId->printDictionary();
+                }
                 break;
             }
             case 3:{
@@ -55,7 +57,13 @@ int main(){
                 }
                 break;
             }
-            case 4:{break;}
+            case 4:{                
+                if (wordId == nullptr)
+                    cout << "Encara está buit"<<endl;
+                else
+                    wordId->printDictionary();
+                break;
+            }
             case 5:{
                 if(wordId  == nullptr)
                     cout << "No inicialitzat" << endl;
@@ -73,6 +81,11 @@ int main(){
         auto end = chrono::steady_clock::now();
         cout << "Temps transcorregut: " << chrono::duration_cast<chrono:: microseconds>(end -begin).count() << " μs" << endl;
         cout << endl;
+
+    }
+    catch (const exception& e) {
+        cout << "Error: " << e.what() << endl;
+    }
     } while (user != 6);
 
 }

@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <stdexcept>
+#include <cctype>
 
 /* Constructors */
 WordIndexer::WordIndexer(){
@@ -49,7 +50,7 @@ void WordIndexer::printOccurrences(const std::string &word) const{
 }
 void WordIndexer::printDictionary(Position<string, Tuple<int> > *node) const{
     if (size() == 0){
-        cout << "Arbre buid"<< endl;
+        cout << "Arbre buit"<< endl;
         return;
     }
 
@@ -91,11 +92,10 @@ void WordIndexer::addText(string path){
 
 void WordIndexer::insertWord(const std::string &word, const int &line, const int &position){
     Tuple<int> t(line, position);
-    tree->insert(word,t);
+    tree->insert(trim(word),t);
 }
 /* Metodes auxiliars, definiu-los aquí sota */
-
-void WordIndexer:: print (const vector<Tuple<int>>& llista)const{
+void WordIndexer:: print (const vector<Tuple<int>>& llista){
     if (llista.empty()){
         cout << "[]";
         return;
@@ -109,4 +109,12 @@ void WordIndexer:: print (const vector<Tuple<int>>& llista)const{
     itr = llista.end()-1;
 
     cout << itr->str() << "]";
+}
+string WordIndexer:: trim(const string& cad){
+    string sortida = "";
+    for (char c : cad){
+        if (isalpha(c))
+            sortida += tolower(c);
+    }
+    return sortida;
 }

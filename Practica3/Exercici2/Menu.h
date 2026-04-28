@@ -73,7 +73,7 @@ char Menu:: demanaSN(string missatge, char s, char n ){
     string sStr(1, s);
     string nStr(1, n);
     while (usuari != sStr && usuari != nStr){
-        cout << missatge << " ("<< s <<"/" << n <<")" ;
+        cout << missatge << " ("<< s <<"/" << n <<"): " ;
         cin >> usuari;
     }
     return usuari[0];
