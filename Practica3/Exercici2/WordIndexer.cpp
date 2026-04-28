@@ -2,12 +2,16 @@
 #include <iostream>
 #include<vector>
 #include <string>
+#include <fstream>
+#include <stdexcept>
 
 /* Constructors */
 WordIndexer::WordIndexer(){
-    this->tree = new BinaryTree<string, Tuple<int>>();
+    this->tree = new BinaryTree<string, Tuple<int>>;
 }
-WordIndexer:: WordIndexer (string path): WordIndexer(){
+WordIndexer:: WordIndexer (string path){
+
+    this->tree = new BinaryTree<string, Tuple<int>>;
     addText(path);
 }
 WordIndexer:: WordIndexer (const WordIndexer& orig){
@@ -43,8 +47,13 @@ void WordIndexer::printOccurrences(const std::string &word) const{
     else
         print(trobat->getValues());
 }
-void WordIndexer::printDictionary(Position<string, Tuple<int> > *node = nullptr) const{
-    if (node == nullptr)
+void WordIndexer::printDictionary(Position<string, Tuple<int> > *node) const{
+    if (size() == 0){
+        cout << "Arbre buid"<< endl;
+        return;
+    }
+
+    if (node == nullptr) 
         node = tree->getRoot();
 
     if (node -> left() != nullptr)
@@ -60,10 +69,29 @@ void WordIndexer::printDictionary(Position<string, Tuple<int> > *node = nullptr)
 
 
 /* Modificadors */
-void WordIndexer::addText(std::string path){}
+void WordIndexer::addText(string path){
+    ifstream dades (path);
+    if (!dades.is_open())
+        throw runtime_error("Error al obrir " + path);
+
+
+    string linea;
+    int fila = 1;
+    while (getline(dades,linea)){
+        stringstream ss(linea);
+        string paraula;
+        int col = 1;
+        while (ss >> paraula) 
+            insertWord(paraula,fila,col++);
+        fila++;
+    }
+    
+    dades.close();
+}
 
 void WordIndexer::insertWord(const std::string &word, const int &line, const int &position){
-    tree->insert(word, Tuple(line, position));
+    Tuple<int> t(line, position);
+    tree->insert(word,t);
 }
 /* Metodes auxiliars, definiu-los aquí sota */
 

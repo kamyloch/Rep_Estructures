@@ -83,7 +83,7 @@ bool Tuple<E>:: operator<(const Tuple&) const{
 }
 template <class E>
 bool Tuple<E>::  operator==(const Tuple& org) const{
-    return getX() == org.getX() && getY() == org.getY()
+    return getX() == org.getX() && getY() == org.getY();
 }
 template <class E>
 string Tuple<E>:: convert_str(E cordenada)const{
