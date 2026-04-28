@@ -26,7 +26,7 @@ void mainExercici1(){
     cout << "Preorder = [";
     tree2.printPreOrder();
     cout << "]" << endl;
-    tree1.print();
+    tree1.print(); //Extra
 }
 
 BinaryTree<string,int> interactiu (){
@@ -41,9 +41,11 @@ BinaryTree<string,int> interactiu (){
             arbre.mirror();
         else if (nou == "leaves")
             cout << "Hi han " << arbre.countLeaves()<< " fullas" << endl;
+        else if (nou == "clear")
+            arbre.clear();
         else if (nou != "adeu")
             arbre.insert(nou,1);
-        arbre.print();
+        arbre.print(true);
     }
     return arbre;
 }
@@ -54,7 +56,7 @@ void randomProva(int elements = 10){
         BinaryTree<int,int> t;
         for (int i = 0; i < elements; i++)
             t.insert(rand() % 101,1);
-        t.print(true);
+        t.print();
     }
 }
 

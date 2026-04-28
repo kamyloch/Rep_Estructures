@@ -50,7 +50,7 @@ class BinaryTree {
         4 es l'espai maxim es per imprimir els nodes mes petits
         Cada nivell desde l'ultim te el doble d'espai que l'anterior
         */
-        void print(bool b =  false) const;
+        void print(bool sencer =  false) const;
         void mirror();
         int countLeaves() const;
         void clear();
@@ -254,7 +254,11 @@ bool BinaryTree<Key, Value>:: identical_rec (const Position<Key, Value>* org,con
         return true;
     if (org == nullptr || act == nullptr)
         return false;
+<<<<<<< HEAD
     if(org->getKey() != act->getKey() || org->getValues() != act->getValues())
+=======
+    if(org->getKey() != act->getKey() && org->getValues() != act->getValues())
+>>>>>>> f4bf043 (ultimex1)
         return false;
     return identical_rec (org->left(),act->left()) && identical_rec (org->right(),act->right());
 }
@@ -281,7 +285,7 @@ void BinaryTree<Key, Value>:: print(bool sencer) const{
         cout<< " --- Arbre massa gran ---" << endl;
         return;
     }
-
+    
     cout << "  --- Nodes : " + to_string(size()) + " ---"<< endl;
 
     //Amplada maxima para centrar de manera que abajo quede xx--xx--xx--....
@@ -406,6 +410,7 @@ template <class Key, class Value>
 void BinaryTree<Key, Value>::clear() {
     if (isEmpty()) return;
     delete getRoot();
+    this->root = nullptr;
     _size = 0;
 }
 
