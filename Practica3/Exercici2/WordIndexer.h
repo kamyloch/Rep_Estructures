@@ -1,10 +1,10 @@
 #ifndef WORD_INDEXER_H
 #define WORD_INDEXER_H
 #include "BinaryTree.h"
-#include "Tuple.h"
-#include <string>
+#include "Tuple.h"  
 #include <vector>
-using namespace std;
+#include <string>
+
 
 class WordIndexer {
     public:
@@ -32,7 +32,8 @@ class WordIndexer {
     private:
         void insertWord(const std::string &word, const int &line, const int &position);
         static void print (const vector<Tuple<int>>&);
+
+        /* Metodes auxiliars */
         static string trim(const string& cad);
-        /* Metodes auxiliars, definiu-los aquí sota */
 };
 #endif

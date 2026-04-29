@@ -1,23 +1,20 @@
-#include "WordIndexer.h"
+#include "WordIndexer.h" //Se incluye "BinaryTree.h", "Tuple.h", <vector>,  <string>
 #include <iostream>
-#include<vector>
-#include <string>
-#include <fstream>
-#include <stdexcept>
-#include <cctype>
+#include <fstream> 
+#include <stdexcept> 
+#include <cctype> 
+using namespace std;
 
 /* Constructors */
 WordIndexer::WordIndexer(){
     this->tree = new BinaryTree<string, Tuple<int>>;
 }
 WordIndexer:: WordIndexer (string path){
-
     this->tree = new BinaryTree<string, Tuple<int>>;
     addText(path);
 }
 WordIndexer:: WordIndexer (const WordIndexer& orig){
     BinaryTree<string, Tuple<int>>* treeOrig = orig.tree;
-
     if (treeOrig == nullptr)
         this->tree = new BinaryTree<string, Tuple<int>>();
     else
@@ -44,24 +41,24 @@ void WordIndexer::printOccurrences(const std::string &word) const{
     Position<string, Tuple<int>>* trobat = tree->search(word);
 
     if (trobat == nullptr)
-        cout << "No hi ha ocurrencies" << endl;
-    else
-        print(trobat->getValues());
+        throw out_of_range("No hi ha ocurrencies");
+
+    print(trobat->getValues());
 }
 void WordIndexer::printDictionary(Position<string, Tuple<int> > *node) const{
-    if (size() == 0){
-        cout << "Arbre buit"<< endl;
-        return;
-    }
+    if (size() == 0)
+        throw out_of_range("Arbre buit");
 
     if (node == nullptr) 
-        node = tree->getRoot();
+        node = tree->getRoot(); // Cas inicial
 
+
+    //InOrdre
     if (node -> left() != nullptr)
         printDictionary(node->left());
     
-    cout << node->getKey() << ": ";
-    print(node->getValues());
+    cout << node->getKey() << ": "; //Key
+    print(node->getValues()); // Ocurrencies
     cout << endl;
 
     if (node->right() != nullptr)
@@ -94,7 +91,8 @@ void WordIndexer::insertWord(const std::string &word, const int &line, const int
     Tuple<int> t(line, position);
     tree->insert(trim(word),t);
 }
-/* Metodes auxiliars, definiu-los aquí sota */
+
+/* Metodes auxiliars*/
 void WordIndexer:: print (const vector<Tuple<int>>& llista){
     if (llista.empty()){
         cout << "[]";
@@ -112,9 +110,8 @@ void WordIndexer:: print (const vector<Tuple<int>>& llista){
 }
 string WordIndexer:: trim(const string& cad){
     string sortida = "";
-    for (char c : cad){
+    for (char c : cad)
         if (isalpha(c))
             sortida += tolower(c);
-    }
     return sortida;
 }

@@ -1,9 +1,17 @@
+/*
+He reciclat el menu fet a la practica anterior
+com TAD auxiliar per tindre el main mes net!
+així ens podem centrar en la implementació del BST
+*/
+
+
 #ifndef MENU_H
 #define MENU_H
-#include "Menu.h"
 #include <initializer_list>
 #include <iostream>
 #include <vector>
+#include <string>
+#include <cctype>
 #include <stdexcept>
 
 using namespace std;
@@ -14,16 +22,17 @@ class Menu{
         Menu(initializer_list<string>); //Lista inicializadora
 
         //Metodes
-        int demanar(string titol = "Menú") const; //Retorna un numero [1-size] des de consola
+        int demanar(string titol = "Menú") const; //Retorna un numero [1-size] des de consola (Throws out_of_range)
         void print() const; //Mostra el menu per consola
-        int size() const;
+        int size() const; //Llargada del menú
 
         //Solucituts per consola robustas
-        static int demanaInt(string missatge = "Digues n ∈ ℤ");
-        static char demanaSN(string missatge = "Digues" , char s = 's',char n = 'n') ;
-        static string demanaStr(string missatge = "Digues");
+        static int demanaInt(string missatge = "Digues n ∈ ℤ");// Fa while
+        static char demanaSN(string missatge = "Digues" , char s = 's',char n = 'n') ; //Fa while
+        static string demanaStr(string missatge = "Digues"); //Mai falla
+
     private:
-        string rang()const;// Mostra interval de la forma [min-max] per informar
+        string rang;// Mostra interval de la forma [min-max] per informar
         vector<string> opcions;
 };
 
@@ -32,12 +41,11 @@ class Menu{
 Menu :: Menu(initializer_list<string> elementos){
     this->opcions.reserve(elementos.size()); 
     initializer_list<string>::iterator it = elementos.begin();
-    
-    for (it; it != elementos.end();++it)
+
+    for (; it != elementos.end();++it)
         this->opcions.push_back(*it);
-}
-string Menu :: rang()const{
-    return "[1-" + to_string(size()) + "]";
+
+    this-> rang = "[1-" + to_string(size()) + "]"; 
 }
 
 int Menu :: demanar(string missatge) const{
@@ -46,10 +54,10 @@ int Menu :: demanar(string missatge) const{
     
     //Mostrem el menu
     print();
-    int usuari = demanaInt("Digues " + rang());
+    int usuari = demanaInt("Digues " + rang);
 
     if (usuari < 1 || size() < usuari)
-        throw out_of_range("S'ha de triar entre " + rang());
+        throw out_of_range("S'ha de triar entre " + rang);
     
     return usuari;
 
@@ -63,20 +71,31 @@ void Menu::print()const{
         cout << i << ". " << *it<< endl;
 
 }
+
 int Menu:: size()const{
     return opcions.size();
 }
 
 //Demana [s/n] a l'usuari de manera robusta
 char Menu:: demanaSN(string missatge, char s, char n ){
+    
+    //Posibilitats
+    char sMin = tolower(s), sMaj = toupper(s);
+    char nMin = tolower(n), nMaj = toupper(n);
+
+    //La entrada ha de ser {s,S,n,N}
     string usuari = "";
-    string sStr(1, s);
-    string nStr(1, n);
-    while (usuari != sStr && usuari != nStr){
+    while ((usuari.length() != 1) || !(usuari[0] == sMin || usuari[0] == nMin || usuari[0] == sMaj || usuari[0] == nMaj)){
         cout << missatge << " ("<< s <<"/" << n <<"): " ;
         cin >> usuari;
     }
-    return usuari[0];
+
+    //Si ha dit que si
+    if (usuari[0] == sMin || usuari[0]== sMaj)
+        return s;
+
+    //Si ha dit que no
+    return n;
 }
 
 //Demana de manera robusta un integer
@@ -99,7 +118,7 @@ int Menu:: demanaInt(string missatge){
 string Menu:: demanaStr(string missatge){
     cout << missatge << ": ";
     string usuari;
-    cin >> usuari;
+    getline(cin,usuari);
     return usuari;
 }
 

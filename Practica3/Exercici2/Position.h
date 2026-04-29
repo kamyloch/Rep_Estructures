@@ -1,8 +1,6 @@
 #ifndef POSITION_H
 #define POSITION_H
-#include <stdexcept>
 #include <vector>
-using namespace std;
 
 template <class Key, class Value>
 class Position {
@@ -18,7 +16,7 @@ class Position {
 
         /* Consultors */
         const Key& getKey() const;
-        const vector<Value>& getValues() const;
+        const std:: vector<Value>& getValues() const;
         Position<Key,Value>* left() const;
         Position<Key,Value>* right() const;
         Position<Key,Value>* parent() const;
@@ -47,7 +45,7 @@ class Position {
 
     private:
         Key key;
-        vector<Value> values;        
+        std:: vector<Value> values;        
         Position<Key,Value>* dreta;
         Position<Key,Value>* esquerra;
         Position<Key,Value>* pare;
@@ -97,7 +95,7 @@ void Position<Key, Value>::addValue(const Value& v){ values.push_back(v);}
 template <class Key, class Value>
 const Key&  Position<Key, Value>:: getKey() const { return key;}
 template <class Key, class Value>
-const vector<Value>& Position<Key, Value>:: getValues() const { return values;}
+const std:: vector<Value>& Position<Key, Value>:: getValues() const { return values;}
 template <class Key, class Value>
 Position<Key,Value>* Position<Key, Value>::left() const{ return esquerra;}
 template <class Key, class Value>
