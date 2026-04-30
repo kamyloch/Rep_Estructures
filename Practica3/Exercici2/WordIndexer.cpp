@@ -35,6 +35,12 @@ int WordIndexer::height() const{
 bool WordIndexer::contains(const std::string &word) const{
     return tree->contains(word);
 }
+const Position<string, Tuple<int>> * WordIndexer:: getRoot() const{
+    if (tree == nullptr)
+        throw out_of_range("Arbre null");
+    return tree->getRoot();
+
+}
 
 /* Prints */
 void WordIndexer::printOccurrences(const std::string &word) const{

@@ -89,8 +89,7 @@ BinaryTree<Key, Value>::BinaryTree(const BinaryTree<Key, Value>& orig): BinaryTr
 }
 template <class Key, class Value>
 BinaryTree<Key, Value>::~BinaryTree(){
-    if (root != nullptr)
-        delete root;
+    clear();
 }
 
 /* Modificadors */
@@ -145,8 +144,9 @@ int BinaryTree<Key, Value>::size() const {
 template <class Key, class Value>
 const vector<Value>& BinaryTree<Key, Value>:: getValues(const Key& key) const { 
     Position<Key, Value>* pos = search(key);
-    if (key == nullptr);
+    if (pos == nullptr)
         throw out_of_range("No hi es aquesta clau");
+    return pos->getValues();
 }
 template <class Key, class Value>
 Position<Key, Value>* BinaryTree<Key, Value>:: search (Key key) const{ //Recursivament

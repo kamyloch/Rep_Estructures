@@ -1,6 +1,7 @@
 #ifndef WORD_INDEXER_H
 #define WORD_INDEXER_H
 #include "BinaryTree.h"
+#include "Position.h"
 #include "Tuple.h"  
 #include <vector>
 #include <string>
@@ -18,11 +19,11 @@ class WordIndexer {
         int size() const;
         int height() const;
         bool contains(const std::string &word) const;
+        const Position<string, Tuple<int>>* getRoot() const;
 
         /* Prints */
         void printOccurrences(const std::string &word) const;
-        void printDictionary(Position<string, Tuple<int> > *node = nullptr) const;
-
+        void printDictionary(Position<string, Tuple<int>> *node = nullptr) const;
     protected:
         BinaryTree<string, Tuple<int>> *tree;
 

@@ -121,5 +121,4 @@ string Menu:: demanaStr(string missatge){
     getline(cin,usuari);
     return usuari;
 }
-
 #endif

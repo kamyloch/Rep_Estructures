@@ -1,13 +1,51 @@
 #include "WordIndexer.h"
 #include "Menu.h"
+#include "Position.h"
 #include <chrono>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 
+
+void  printVector (const vector<Tuple<int>>& llista){
+    if (llista.empty()){
+        cout << "[]";
+        return;
+    }
+    
+    cout << "[";
+    auto itr = llista.begin();
+    for(; itr != llista.end()-1; ++itr)
+        cout << itr->str() << ", ";
+    
+    itr = llista.end()-1;
+
+    cout << itr->str() << "]";
+}
+void print4040(const Position<string, Tuple<int>> *node, int& fets){
+
+    //Inordre
+    if (node -> left() != nullptr)
+        print4040(node->left(), fets);
+
+    if (fets !=0 && fets%40 == 0){
+        char eleccio = Menu::demanaSN("Fets " + to_string(fets) + ", vols continuar?");
+        if (eleccio == 'n')
+            throw string("Recursividad lista!");
+    }
+    cout << node->getKey() << ": "; //Key
+    printVector(node->getValues()); // Ocurrencies
+    cout << endl;
+    fets++;
+
+    if (node->right() != nullptr)
+        print4040(node->right(), fets);
+       
+}
+
 int main(){
     Menu opcions = {"Crea l'arbre", //1
-                    "Mostra arbre", //2
+                    "Mostra arbre 40 en 40", //2
                     "Llegir dictionary",//3
                     "Mostra index de paraules",//4
                     "Consultar profunditat del arbre",//5
@@ -40,7 +78,9 @@ int main(){
                     break;
                 }
                 case 2:{
-                    wordId->printDictionary();
+                    int fets = 0;
+                    print4040(wordId->getRoot(),fets);
+                    cout << "Fets: " << fets<< endl;
                     break;
                 }
                 case 3:{
@@ -60,7 +100,7 @@ int main(){
                     break;
                 }
                 case 5:{
-                    cout << "Profunditat: " << wordId->height() << endl;
+                    cout <<"Profunditat: " << wordId->height() << endl;
                     break;
                 }
                 case 6:{
@@ -77,6 +117,9 @@ int main(){
         }
         catch (const exception& e) {
             cout << "Error: " << e.what() << endl;
+        }
+        catch (const string& s){
+            cout << s << endl;
         }
     } while (user != 6);
 }
