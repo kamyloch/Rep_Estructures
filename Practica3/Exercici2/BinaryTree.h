@@ -33,6 +33,7 @@ class BinaryTree {
         bool isEmpty() const; //O(1)
         int height() const; //O(n)
         bool contains(const Key& key) const; // O(log n)
+        vector<Key> getLeaves () const;
         
         /* Prints */
         //Complexitat O(n)
@@ -61,12 +62,14 @@ class BinaryTree {
         int _size;
         /* Recursivitats */
         Position<Key, Value>* search_rec (Position<Key, Value>*, Key) const;
+        void getLeaves_rec (vector<Key>&, const Position<Key, Value>*) const;
         void copy_rec (const Position<Key, Value>&, Position<Key, Value>*);
         bool identical_rec (const Position<Key, Value>*,const Position<Key, Value>*) const;
 
+
         //Per imprimir l'abre
-        string center(string cad,  int n) const;
-        string convert_str(const Key& value)const;
+        static string center(string cad,  int n);
+        static string convert_str(const Key& value);
 };
 
 
@@ -178,6 +181,12 @@ bool BinaryTree<Key, Value>::contains(const Key& key) const{ //Iterativament
     }
     return trobat;
 }
+template <class Key, class Value>
+vector<Key> BinaryTree<Key, Value>:: getLeaves () const{
+    vector<Key> leaves;
+    getLeaves_rec(leaves,getRoot());
+    return leaves;
+}
 
 
 
@@ -259,12 +268,24 @@ bool BinaryTree<Key, Value>:: identical_rec (const Position<Key, Value>* org,con
     return identical_rec (org->left(),act->left()) && identical_rec (org->right(),act->right());
 }
 
+template <class Key, class Value>
+void BinaryTree<Key, Value>:: getLeaves_rec (vector<Key>& lista, const Position<Key, Value>* node) const{
+    if(node == nullptr)
+        return;
+    if(node->isLeaf())
+        lista.push_back(node->getKey());
+    if(node->left() != nullptr)
+        getLeaves_rec(lista,node);
+    if(node->left() != nullptr)
+        getLeaves_rec(lista,node);
+    return;
+}
 
 
 
 /* Extra */
 template <class Key, class Value>
-string BinaryTree<Key, Value>:: convert_str(const Key& value) const{
+string BinaryTree<Key, Value>:: convert_str(const Key& value){
     stringstream ss;
     ss << value;
     return ss.str();
@@ -377,7 +398,7 @@ void BinaryTree<Key, Value>:: print(bool sencer) const{
     }
 }
 template <class Key, class Value>
-string BinaryTree<Key, Value>:: center(string cad,int n) const{
+string BinaryTree<Key, Value>:: center(string cad,int n) {
     if (n == 0) return "";
     int espacio = n - cad.size();
     if (espacio == 0) return cad;
@@ -388,7 +409,6 @@ string BinaryTree<Key, Value>:: center(string cad,int n) const{
 
     return string(izq,' ') + cad + string(der,' ');
 }
-
 template <class Key, class Value>
 void BinaryTree<Key, Value>::mirror(){
     if (!isEmpty())
@@ -400,9 +420,7 @@ int BinaryTree<Key, Value>::countLeaves() const{
 
     return getRoot()->countLeaves();
 }
-
 template <class Key, class Value>
-
 void BinaryTree<Key, Value>::clear() {
     if (isEmpty()) return;
     delete getRoot();
