@@ -26,9 +26,29 @@ void mainExercici1(){
     cout << "Preorder = [";
     tree2.printPreOrder();
     cout << "]" << endl;
+    vector<int> result = tree2.getLeaves();
+    cout << "fulles arbres = " ;
+    for (vector<int>::iterator it = result.begin(); it != result.end(); ++it) {
+    cout << *it << " ";
+    }
+    cout << endl;
     tree1.print(); //Extra
 }
+void print (const vector<int>& llista){
+    if (llista.empty()){
+        cout << "[]";
+        return;
+    }
+    
+    cout << "[";
+    auto itr = llista.begin();
+    for(; itr != llista.end()-1; ++itr)
+        cout << *itr << ", ";
+    
+    itr = llista.end()-1;
 
+    cout << *itr << "]";
+}
 BinaryTree<string,int> interactiu (){
     cout << "   ---  Arbre buit ---" << endl;
     cout << "---  Type 'adeu' for ending --- " << endl;
@@ -59,7 +79,6 @@ void randomProva(int elements = 10){
         t.print();
     }
 }
-
 void provaMetodesArbre(){
     BinaryTree<int, int> tree;
     int testKeys[] =   {2, 0, 8, 45, 76, 5, 3, 40};
@@ -82,8 +101,11 @@ void provaMetodesArbre(){
     cout << "Empty "    << ((tree.isEmpty() == false)?               "be" : "malament") << endl;
     cout << "Height "   << ((tree.height() == 4)?                    "be" : "malament") << endl;
     cout << "Contains " << ((tree.contains(100) == false)?           "be" : "malament") << endl;
+    cout << "Fulles:  "; print(tree.getLeaves()); cout << endl;
 
 }
+
+
 int main(){
     mainExercici1();
     //randomProva();

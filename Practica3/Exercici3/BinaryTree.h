@@ -275,9 +275,9 @@ void BinaryTree<Key, Value>:: getLeaves_rec (vector<Key>& lista, const Position<
     if(node->isLeaf())
         lista.push_back(node->getKey());
     if(node->left() != nullptr)
-        getLeaves_rec(lista,node);
-    if(node->left() != nullptr)
-        getLeaves_rec(lista,node);
+        getLeaves_rec(lista,node->left());
+    if(node->right() != nullptr)
+        getLeaves_rec(lista,node->right());
     return;
 }
 
