@@ -38,7 +38,7 @@ void mainExercici3(){
 
 BalancedTree<int,int> interactiu (){
     cout << "   ---  Arbre buit ---" << endl;
-    cout << "---  Type '-1' for ending --- " << endl;
+    cout << "---  Type '-1' per tancar --- " << endl;
     BalancedTree<int,int> arbre;
     int nou = 0;
     while (nou != -1){
@@ -57,6 +57,6 @@ BalancedTree<int,int> interactiu (){
 }
 
 int main(){
-    mainExercici3();
+    //mainExercici3();
     interactiu();
 }

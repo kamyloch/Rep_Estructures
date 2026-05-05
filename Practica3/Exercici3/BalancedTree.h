@@ -75,7 +75,7 @@ void BalancedTree<Key, Value>:: balancejar(Position<Key, Value>* node){
        
         case -2:{// Hi ha més a la esquerra
             if (pare->left() == node) 
-                rotar_left(avi);
+                rotar_right(avi);
             else
                 rotar_leftRight(avi);
             break;
