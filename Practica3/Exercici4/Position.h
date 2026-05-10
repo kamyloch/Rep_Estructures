@@ -13,10 +13,12 @@ class Position {
         void setLeft(Position<Key,Value>*);
         void setRight(Position<Key,Value>*);
         void setParent(Position<Key,Value>*);
+        void setHeight(int);
 
         /* Consultors */
         const Key& getKey() const;
         const std:: vector<Value>& getValues() const;
+        int height() const;
         Position<Key,Value>* left() const;
         Position<Key,Value>* right() const;
         Position<Key,Value>* parent() const;
@@ -29,11 +31,6 @@ class Position {
         El cost es en el pijor dels casos O(n) si l'abre es lineal i el node actual es fulla
         Però donat un arbre aleatori si es suposa que es perfecte llavoros es O(logn) */
         int depth() const;
-    
-        /* n = numero de nodes a l'abre
-        El cost es en el pijor dels casos O(n) si l'abre es lineal i el node actual es arrel,
-        tot i que no sigui un node aleatori en un arbre perfecte haurem de recorrer tot el que es a soa del node*/
-        int height() const;
         void addValue(const Value& value);
         bool operator==(const Position<Key, Value>& other) const;
 
@@ -44,6 +41,7 @@ class Position {
         int countLeaves() const;
 
     private:
+        int alcada;
         Key key;
         std:: vector<Value> values;        
         Position<Key,Value>* dreta;
@@ -59,7 +57,8 @@ Position<Key, Value>::Position(const Key key):
     key(key),
     dreta(nullptr),
     esquerra(nullptr),
-    pare(nullptr)
+    pare(nullptr),
+    alcada(1)
 {}
 template <class Key, class Value>
 Position<Key, Value>::Position(const Position<Key, Value>& orig):
@@ -89,6 +88,8 @@ void Position<Key, Value>::setRight(Position<Key,Value>* p){ dreta = p;}
 template <class Key, class Value>
 void Position<Key, Value>::setParent(Position<Key,Value>* p){ pare = p;}
 template <class Key, class Value>
+void Position<Key, Value>::setHeight(int h){ alcada = h;}
+template <class Key, class Value>
 void Position<Key, Value>::addValue(const Value& v){ values.push_back(v);}
 
 /* Consultors */
@@ -115,21 +116,8 @@ int Position<Key, Value>:: depth() const{
     return parent() -> depth()+1;
 }
 template <class Key, class Value>
-int Position<Key, Value>:: height() const{   
-    //return height_rec(this);
-    if(isLeaf()) return 1;
-
-    int izq=0, der=0;
-    
-    if (left() != nullptr)
-        izq = left()->height()+1;
-
-    if (right() != nullptr)
-        der = right()->height()+1;
-    
-    if (izq > der)
-        return izq;
-    return der;
+int Position<Key, Value>:: height() const{
+    return alcada;
 }
 template <class Key, class Value>
 bool Position<Key, Value>:: operator==(const Position<Key, Value>& other) const{

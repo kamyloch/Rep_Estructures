@@ -51,12 +51,10 @@ class BinaryTree {
         4 es l'espai maxim es per imprimir els nodes mes petits
         Cada nivell desde l'ultim te el doble d'espai que l'anterior
         */
-        void print(bool b =  false) const;
+        void print() const;
         void mirror();
         int countLeaves() const;
         void clear();
-
-// En BalancedTree
     protected:
         Position<Key, Value>* root;
 
@@ -65,6 +63,7 @@ class BinaryTree {
         /* Recursivitats */
         Position<Key, Value>* search_rec (Position<Key, Value>*, Key) const;
         void getLeaves_rec (vector<Key>&, const Position<Key, Value>*) const;
+        int height_rec (const Position<Key, Value>*) const;
         void copy_rec (const Position<Key, Value>&, Position<Key, Value>*);
         bool identical_rec (const Position<Key, Value>*,const Position<Key, Value>*) const;
 
@@ -127,10 +126,11 @@ Position<Key, Value>* BinaryTree<Key, Value>:: insert(const Key& key, const Valu
     }
 
     Position<Key, Value>* nou = new Position<Key, Value>(key);
-    if (itrPare->getKey()< key)
-        itrPare->setRight(nou);
-    else
-        itrPare->setLeft(nou);
+    
+    if (itrPare->getKey() < key)
+            itrPare->setRight(nou);
+        else
+            itrPare->setLeft(nou);
     nou->setParent(itrPare);
     nou->addValue(value);
     this->_size ++;
@@ -166,7 +166,7 @@ bool BinaryTree<Key, Value>::isEmpty() const{
 template <class Key, class Value>
 int BinaryTree<Key, Value>::height() const { //Recursivament
     if (isEmpty()) throw out_of_range("L'abre está buid");
-    return getRoot()->height();
+    return height_rec(root);
 }
 template <class Key, class Value>
 bool BinaryTree<Key, Value>::contains(const Key& key) const{ //Iterativament
@@ -277,12 +277,21 @@ void BinaryTree<Key, Value>:: getLeaves_rec (vector<Key>& lista, const Position<
     if(node->isLeaf())
         lista.push_back(node->getKey());
     if(node->left() != nullptr)
-        getLeaves_rec(lista,node);
-    if(node->left() != nullptr)
-        getLeaves_rec(lista,node);
+        getLeaves_rec(lista,node->left());
+    if(node->right() != nullptr)
+        getLeaves_rec(lista,node->right());
     return;
 }
-
+template <class Key, class Value>
+int BinaryTree<Key, Value>:: height_rec (const Position<Key, Value>* node) const{
+    if(node->isLeaf())
+        return 1;
+    int hIzq = node->left()  == nullptr? 0 : height_rec(node->left()) ;
+    int hDer = node->right() == nullptr? 0 : height_rec(node->right());
+    if (hIzq > hDer)
+        return hIzq+1;
+    return hDer+1;
+}
 
 
 /* Extra */
@@ -293,7 +302,7 @@ string BinaryTree<Key, Value>:: convert_str(const Key& value){
     return ss.str();
 }
 template <class Key, class Value>
-void BinaryTree<Key, Value>:: print(bool sencer) const{
+void BinaryTree<Key, Value>:: print() const{
     if(isEmpty()){ 
         cout<< " --- Arbre buit ---" << endl;
         return;
@@ -330,11 +339,11 @@ void BinaryTree<Key, Value>:: print(bool sencer) const{
         
         //Si es null imprimeix l'espai
         if (top == nullptr)
-            cout << center(sencer? "--" : "  ",amplada);
+            cout << center("  ",amplada);
         
         //Sino agafem la key del node i la imprimeix
         else
-            cout << center(convert_str(top->getKey()),amplada);
+            cout << center(convert_str(top->getKey()) + to_string(top->height()),amplada);
     
         //Treiem l'imprès
         cua.pop();
@@ -373,26 +382,21 @@ void BinaryTree<Key, Value>:: print(bool sencer) const{
             int num_Nodes= pow(2,nivell);
 
             //Per a cada node del nivell imprimin els palets a sota de cada node
-            if (sencer){
-                for(int i = 0; i < num_Nodes; i++)
-                    cout << center(" /", amplada) << center("\\ ", amplada);
-            }
             //Aportacio per !sencer de gemini
-            else{
-                //Clon de la cua
-                queue<Position<Key, Value>*> copia = cua;
             
-                //Per cada node del nivell actual
-                for (int i = 0; i < num_Nodes; i++) {
-                //Agafem els fills
-                    Position<Key, Value>* izq = copia.front(); copia.pop();
-                    Position<Key, Value>* der = copia.front(); copia.pop();
-
-                    //Fem les branques si hi ha fill
-                    string brancaIzq = (izq != nullptr) ? " /" : "  ";
-                    string brancaDer = (der != nullptr) ? "\\ " : "  ";
-                    cout << center(brancaIzq, amplada)<< center(brancaDer, amplada);
-            }
+            //Clon de la cua
+            queue<Position<Key, Value>*> copia = cua;
+            
+            //Per cada node del nivell actual
+            for (int i = 0; i < num_Nodes; i++) {
+            //Agafem els fills
+                Position<Key, Value>* izq = copia.front(); copia.pop();
+                Position<Key, Value>* der = copia.front(); copia.pop();
+                //Fem les branques si hi ha fill
+                string brancaIzq = (izq != nullptr) ? " /" : "  ";
+                string brancaDer = (der != nullptr) ? "\\ " : "  ";
+                cout << center(brancaIzq, amplada)<< center(brancaDer, amplada);
+            
         }
             cout << endl;
             nivell++;

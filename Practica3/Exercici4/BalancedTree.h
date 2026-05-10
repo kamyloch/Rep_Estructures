@@ -2,6 +2,7 @@
 #define BALANCED_TREE_H
 #include "Position.h"
 #include "BinaryTree.h"
+#include <algorithm> // Per fer max
 #include <stdexcept>
 
 using namespace std;
@@ -20,8 +21,9 @@ class BalancedTree : public BinaryTree<Key, Value> {
         void rotar_right(Position<Key, Value>*);
         void rotar_leftRight(Position<Key, Value>*);
         void rotar_rightLeft(Position<Key, Value>*);
+        void upd_height(Position<Key, Value>*);
         void balancejar(Position<Key, Value>*); //Retorna l'avi balancejat
-
+        
 };
 /*  --------   Definició de Mètodes  --------   */
 template <class Key, class Value>
@@ -36,11 +38,25 @@ template <class Key, class Value>
 BalancedTree<Key, Value>:: ~BalancedTree(){} //BSTree ja destrueix l'abre
 
 template <class Key, class Value>
+void BalancedTree<Key, Value>::upd_height(Position<Key, Value>* node){
+    if(node == nullptr) return;
+
+    int hLeft  = node->left()  == nullptr? 0 : node->left()-> height();
+    int hRight = node->right() == nullptr? 0 : node->right()->height();
+
+    node->setHeight((hLeft < hRight)? hRight+1: hLeft+1);
+}
+
+template <class Key, class Value>
 Position<Key, Value>* BalancedTree<Key, Value>:: insert(const Key& key, const Value& value){
     Position<Key, Value>* nou = BinaryTree<Key, Value>::insert(key, value);
-    Position<Key, Value>* itr = nou;
+    if ((nou -> getValues()).size() != 1) return nou; // No cal balancejar si no hi ha nou node
 
+    Position<Key, Value>* itr = nou;
+    
+    //Balancejem
     while(itr != nullptr  && !itr->isRoot()){
+        upd_height(itr->parent());
         balancejar(itr);
         itr = itr->parent();
     }
@@ -80,6 +96,7 @@ void BalancedTree<Key, Value>:: balancejar(Position<Key, Value>* node){
                 rotar_leftRight(avi);
             break;
             }
+        
     }
 }
 
@@ -145,6 +162,11 @@ void BalancedTree <Key, Value> :: rotar_left(Position<Key, Value>* a){
     // b <-> a
     a->setParent(b);
     b->setLeft(a);
+
+
+    //Uptade height
+    upd_height(a);
+    upd_height(b);
 }
 template <class Key, class Value>
 void  BalancedTree <Key, Value> :: rotar_right(Position<Key, Value>* c){
@@ -176,6 +198,10 @@ void  BalancedTree <Key, Value> :: rotar_right(Position<Key, Value>* c){
     // b <-> c
     c->setParent(b);
     b->setRight(c);
+
+    //Uptade height
+    upd_height(c);
+    upd_height(b);
 }
 template <class Key, class Value>
 void  BalancedTree <Key, Value> :: rotar_leftRight(Position<Key, Value>* c){

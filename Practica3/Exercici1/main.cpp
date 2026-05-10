@@ -110,5 +110,5 @@ int main(){
     mainExercici1();
     //randomProva();
     //provaMetodesArbre();
-    //interactiu();
+    interactiu();
 }

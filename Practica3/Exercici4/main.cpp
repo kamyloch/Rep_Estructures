@@ -42,8 +42,7 @@ void print4040(const Position<string, Tuple<int>> *node, int& fets){
         print4040(node->right(), fets);
        
 }
-
-int main(){
+void mainMenu(){
     Menu opcions = {"Crea l'arbre", //1
                     "Mostra arbre 40 en 40", //2
                     "Llegir dictionary",//3
@@ -122,4 +121,28 @@ int main(){
             cout << s << endl;
         }
     } while (user != 6);
+}
+void interactiu (){
+    cout << "   ---  Arbre buit ---" << endl;
+    cout << "---  Type '-1' per tancar --- " << endl;
+    BalancedTree<int,int> arbre;
+    int nou = 0;
+    while (nou != -1){
+        cout << "Nou element: ";
+        cin >> nou;
+        if (cin.fail()){
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << " Només Integers! (-1 per tancar)"<< endl;
+        }
+        else if (nou != -1)
+            arbre.insert(nou,1);
+        arbre.print();
+    }
+}
+
+
+int main(){
+    interactiu();
+
 }
