@@ -307,7 +307,8 @@ void BinaryTree<Key, Value>:: print() const{
 
     //Amplada maxima para centrar de manera que abajo quede xx--xx--xx--....
     //xx-- son cuatro caracteres, y sabemos que habran 2^h elementos (h = alçada)
-    int amplada = pow(2,h- 1)*4;
+    int base = 4; //Espai per a cada element a la base de l'arbre
+    int amplada = pow(2,h- 1)*base;
 
 
     //Recorregut d'amplada amb cua com vist a teoria
@@ -322,7 +323,7 @@ void BinaryTree<Key, Value>:: print() const{
     int nivell = 0;
     int fets = 0;
     //4 espai_minim es un element, en 2 ja no hauria de fer print
-    while (amplada >= 4){
+    while (amplada >= base){
         //Agafem el front
         top = cua.front();
         
@@ -332,7 +333,8 @@ void BinaryTree<Key, Value>:: print() const{
         
         //Sino agafem la key del node i la imprimeix
         else
-            cout << center(convert_str(top->getKey()) + to_string(top->getHeight()),amplada);
+            //cout << center(convert_str(top->getKey()) +"-" + to_string(top->getHeight()),amplada);
+            cout << center(convert_str(top->getKey()), amplada);
     
         //Treiem l'imprès
         cua.pop();
@@ -364,7 +366,7 @@ void BinaryTree<Key, Value>:: print() const{
             cout << endl;
 
             //Atura a l'ultim nivell
-            if (amplada<3) continue;
+            if (amplada<base) continue;
             
 
             //Palitos que conecten els nodes

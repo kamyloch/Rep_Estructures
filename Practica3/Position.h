@@ -65,19 +65,16 @@ template <class Key, class Value>
 Position<Key, Value>::Position(const Position<Key, Value>& orig):
     Position(orig.getKey()){
     values = orig.getValues();
+    alcada = orig.alcada;
 }
 template <class Key, class Value>
 Position<Key, Value>::~Position(){
     //Destruim els fills abans de destruitme 
-    Position<Key, Value>* izq = this->left();
-    Position<Key, Value>* der = this->right();
-    if (izq != nullptr){
-        izq ->setParent(nullptr);
-        delete izq;
+    if (this->left() != nullptr){
+        delete this->left();
     }
-    if (der != nullptr){
-        der ->setParent(nullptr);
-        delete der;
+    if (this->right() != nullptr){
+        delete this->right();
     }
 }
 

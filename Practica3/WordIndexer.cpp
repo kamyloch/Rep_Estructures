@@ -21,7 +21,7 @@ WordIndexer:: WordIndexer (const WordIndexer& orig){
         this->tree = new BinaryTree<string, Tuple<int>>(*treeOrig);
 }
 WordIndexer:: ~WordIndexer(){
-    if (tree != nullptr)
+    if (this->tree != nullptr)
         delete tree;
 }
 

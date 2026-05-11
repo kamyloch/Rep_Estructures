@@ -1,14 +1,22 @@
-#include "WordIndexerBalanced.h"
-#include "BalancedTree.h"
-#include "BinaryTree.h"
-#include "Menu.h"
-#include "Position.h"
-#include <chrono>
-#include <fstream>
-#include <iostream>
-#include <stdexcept>
+#include "WordIndexerBalanced.h" //Inclou BinaryTree, BalancedTree, WordIndexer
+#include "Menu.h"     //Clase auxiliar (Ex2,4)
+#include <fstream>    //Files
+#include <iostream>   //Consola
+#include <stdexcept>  //Gestió exceptions (Menu)
+#include <chrono>     //Per mesura (Ex5)
+#include <functional> //Per mesura (Ex5)
 
-//8 9 10 2 1 5 3 6 4
+void llegirDictionary(WordIndexer* wordId){ //Per Menu (Ex 2,4) i prova de temps (Ex 5)
+    ifstream dades ("dictionary.txt");
+    if (!dades.is_open())                    
+        throw runtime_error("Error al obrir dictionary.txt");
+    
+    string paraula;         
+    while (dades >> paraula)                        
+        wordId-> contains(paraula);                    
+    dades.close();
+}
+
 void mainEx1(){
     BinaryTree<int, int> tree1;
     int testKeys[] = {2, 0, 8, 45, 76, 5, 3, 40};
@@ -39,9 +47,8 @@ void mainEx1(){
     cout << *it << " ";
     }
     cout << endl;
-    tree1.print(); //Extra
+    tree2.print(); //Extra
 }
-
 void mainEx2(){
     Menu opcions = {"Crea l'arbre", //1
                     "Mostra arbre 40 en 40", //2
@@ -54,7 +61,7 @@ void mainEx2(){
     WordIndexer* wordId = nullptr;
     do{
         try{
-            user = opcions.demanar("Gestió de paraules"); //Llança exception si la consola es out of range
+            user = opcions.demanar("Gestió de paraules amb -BinaryTree-"); //Llança exception si la consola es out of range
             
             if(wordId == nullptr && user != 1 && user != 6)
                 throw runtime_error("Encara está buit"); // Només 1 o 6 son válidas si wordId es null
@@ -81,15 +88,7 @@ void mainEx2(){
                     break;
                 }
                 case 3:{
-                    ifstream dades ("dictionary.txt");
-                    if (!dades.is_open()) 
-                        throw runtime_error("Error al obrir dictionary.txt");
-                
-                    string paraula;
-                    while (dades >> paraula)
-                        wordId-> contains(paraula);
-                    dades.close();
-
+                    llegirDictionary(wordId);
                     break;
                 }
                 case 4:{              
@@ -120,7 +119,6 @@ void mainEx2(){
         }
     } while (user != 6);
 }
-
 void mainEx3(){
     BalancedTree<int, int> tree1;
     int testKeys[] = {2, 0, 8, 45, 76, 5, 3, 40};
@@ -135,7 +133,7 @@ void mainEx3(){
     cout << "Postorder = [";
     tree1.printPostOrder();
     cout << "]" << endl;
-    BinaryTree<int, int> tree2(tree1);
+    BalancedTree<int, int> tree2(tree1);
     cout << " identics " << tree1.identicalTree(tree2) << endl;
     cout << "Preorder = [";
     tree1.printPreOrder();
@@ -151,9 +149,8 @@ void mainEx3(){
     cout << *it << " ";
     }
     cout << endl;
-    tree1.print(); //Extra
+    tree2.print(); //Extra
 }
-
 void mainEx4(){
     Menu opcions = {"Crea l'arbre", //1
                     "Mostra arbre 40 en 40", //2
@@ -166,7 +163,7 @@ void mainEx4(){
     WordIndexerBalanced* wordId = nullptr;
     do{
         try{
-            user = opcions.demanar("Gestió de paraules"); //Llança exception si la consola es out of range
+            user = opcions.demanar("Gestió de paraule amb -BalancedTree-"); //Llança exception si la consola es out of range
             
             if(wordId == nullptr && user != 1 && user != 6)
                 throw runtime_error("Encara está buit"); // Només 1 o 6 son válidas si wordId es null
@@ -193,15 +190,7 @@ void mainEx4(){
                     break;
                 }
                 case 3:{
-                    ifstream dades ("dictionary.txt");
-                    if (!dades.is_open()) 
-                        throw runtime_error("Error al obrir dictionary.txt");
-                
-                    string paraula;
-                    while (dades >> paraula)
-                        wordId-> contains(paraula);
-                    dades.close();
-
+                    llegirDictionary(wordId);
                     break;
                 }
                 case 4:{              
@@ -233,7 +222,58 @@ void mainEx4(){
     } while (user != 6);
 }
 
+void mesurar(string nombre, function<void()> func) { //Amb l'ajuda de Gemini
+    auto inicio = std::chrono::high_resolution_clock::now();
+    
+    func(); 
+    
+    auto fin = std::chrono::high_resolution_clock::now();
+    
+    auto duracion_total = std::chrono::duration_cast<std::chrono::microseconds>(fin - inicio).count();
 
+    cout << nombre << ": " << duracion_total << " μs" << endl;
+}
+void mainEx5(){
+    cout << " --- BinaryTree --- " << endl;
+    WordIndexer* normal;
+    cout << " - Cas Petit: " << endl;
+    mesurar(" · Insersió", [&]() { normal = new WordIndexer("shortText.txt");});
+    mesurar(" · Cerca",    [&]() { llegirDictionary(normal);});
+
+    delete normal; normal = nullptr;
+
+    cout << endl << " - Cas Large: " << endl;
+    mesurar(" · Insersió", [&]() { normal = new WordIndexer("longText.txt");});
+    mesurar(" · Cerca",    [&]() { llegirDictionary(normal);});
+
+    delete normal; normal = nullptr;
+
+    cout << endl << " - Cas Unbalanced: " << endl;
+    mesurar(" · Insersió", [&]() { normal = new WordIndexer("unbalancedText.txt");});
+    mesurar(" · Cerca",    [&]() { llegirDictionary(normal);});
+
+    cout << endl << endl << " --- BalancedTree --- " << endl;
+    WordIndexerBalanced* balanced;
+    cout  << " - Cas Petit: " << endl;
+    mesurar(" · Insersió", [&]() { balanced = new WordIndexerBalanced("shortText.txt");});
+    mesurar(" · Cerca",    [&]() { llegirDictionary(balanced);});
+
+    delete balanced; balanced = nullptr;
+
+    cout << endl << " - Cas Large: " << endl;
+    mesurar(" · Insersió", [&]() { balanced = new WordIndexerBalanced("longText.txt");});
+    mesurar(" · Cerca",    [&]() { llegirDictionary(balanced);});
+
+    delete balanced; balanced = nullptr;
+
+    cout << endl << " - Cas Unbalanced: " << endl;
+    mesurar(" · Insersió", [&]() { balanced = new WordIndexerBalanced("unbalancedText.txt");});
+    mesurar(" · Cerca",    [&]() { llegirDictionary(balanced);});
+    
+}
+
+
+//Mètodes Personalitzats
 void randomProva(int elements = 10){
     cout << "Prova del metode print amb " << elements << " valors random";
     for (int i = 0; i < 5; i++){
@@ -244,7 +284,6 @@ void randomProva(int elements = 10){
         t.print();
     }
 }
-
 void interactiuBalanced (){
     cout << "   ---  Arbre buit ---" << endl;
     cout << "---  Type '-1' per tancar --- " << endl;
@@ -281,7 +320,6 @@ void interactiuNormal (){
         arbre.print();
     }
 }
-
 void provaMetodesArbre(){
     BinaryTree<int, int> tree;
     int testKeys[] =   {2, 0, 8, 45, 76, 5, 3, 40};
@@ -315,11 +353,16 @@ int main(){
     mainEx2();
     mainEx3();
     mainEx4();
+    mainEx5();
     provaMetodesArbre();
-    interactiuNormal();
+    interactiuNormal(); //8 9 10 2 1 5 3 6 4
     interactiuBalanced();
     */
-   mainEx2();
-   mainEx4();
+   mainEx1();
+    mainEx2();
+    mainEx3();
+    mainEx4();
+    mainEx5();
+   interactiuBalanced();
     
 }

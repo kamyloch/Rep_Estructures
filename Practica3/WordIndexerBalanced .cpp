@@ -15,6 +15,4 @@ WordIndexerBalanced:: WordIndexerBalanced (const WordIndexerBalanced& orig){
         this->tree = new BalancedTree<string, Tuple<int>>(*treeOrig);
 }
 WordIndexerBalanced:: ~WordIndexerBalanced(){
-    if (tree != nullptr)
-        delete tree;
 }
