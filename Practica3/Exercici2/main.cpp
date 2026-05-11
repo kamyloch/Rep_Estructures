@@ -6,43 +6,6 @@
 #include <iostream>
 #include <stdexcept>
 
-
-void  printVector (const vector<Tuple<int>>& llista){
-    if (llista.empty()){
-        cout << "[]";
-        return;
-    }
-    
-    cout << "[";
-    auto itr = llista.begin();
-    for(; itr != llista.end()-1; ++itr)
-        cout << itr->str() << ", ";
-    
-    itr = llista.end()-1;
-
-    cout << itr->str() << "]";
-}
-void print4040(const Position<string, Tuple<int>> *node, int& fets){
-
-    //Inordre
-    if (node -> left() != nullptr)
-        print4040(node->left(), fets);
-
-    if (fets !=0 && fets%40 == 0){
-        char eleccio = Menu::demanaSN("Fets " + to_string(fets) + ", vols continuar?");
-        if (eleccio == 'n')
-            throw string("Recursividad lista!");
-    }
-    cout << node->getKey() << ": "; //Key
-    printVector(node->getValues()); // Ocurrencies
-    cout << endl;
-    fets++;
-
-    if (node->right() != nullptr)
-        print4040(node->right(), fets);
-       
-}
-
 int main(){
     Menu opcions = {"Crea l'arbre", //1
                     "Mostra arbre 40 en 40", //2
@@ -78,9 +41,7 @@ int main(){
                     break;
                 }
                 case 2:{
-                    int fets = 0;
-                    print4040(wordId->getRoot(),fets);
-                    cout << "Fets: " << fets<< endl;
+                    wordId->print40();
                     break;
                 }
                 case 3:{

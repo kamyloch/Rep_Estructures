@@ -35,12 +35,6 @@ int WordIndexer::height() const{
 bool WordIndexer::contains(const std::string &word) const{
     return tree->contains(word);
 }
-const Position<string, Tuple<int>> * WordIndexer:: getRoot() const{
-    if (tree == nullptr)
-        throw out_of_range("Arbre null");
-    return tree->getRoot();
-
-}
 
 /* Prints */
 void WordIndexer::printOccurrences(const std::string &word) const{
@@ -49,7 +43,7 @@ void WordIndexer::printOccurrences(const std::string &word) const{
     if (trobat == nullptr)
         throw out_of_range("No hi ha ocurrencies");
 
-    print(trobat->getValues());
+    printVector(trobat->getValues());
 }
 void WordIndexer::printDictionary(Position<string, Tuple<int> > *node) const{
     if (size() == 0)
@@ -64,11 +58,49 @@ void WordIndexer::printDictionary(Position<string, Tuple<int> > *node) const{
         printDictionary(node->left());
     
     cout << node->getKey() << ": "; //Key
-    print(node->getValues()); // Ocurrencies
+    printVector(node->getValues()); // Ocurrencies
     cout << endl;
 
     if (node->right() != nullptr)
         printDictionary(node->right());
+}
+void WordIndexer::print40() const{
+    if (this->tree == nullptr)
+        throw runtime_error("Arbre no inicialitzat");
+    int fets = 0;
+    try{
+        print40_rec(fets,this->tree->getRoot());
+    }catch(string& e){
+        //Recursivitat llista
+    }
+
+}
+void WordIndexer::print40_rec(int& fets,const Position<string, Tuple<int>> *node) const{
+    
+    //Inordre
+    if (node -> left() != nullptr)
+        print40_rec(fets, node->left());
+
+    //Pregunta
+    if (fets !=0 && fets%40 == 0){
+        //Demana
+        string eleccio = "";
+        while (eleccio != "n" && eleccio != "s"){
+            cout << "Fets " + to_string(fets) + ", vols continuar? (s/n): ";
+            cin >> eleccio;
+        }
+        //Tanca
+        if (eleccio == "n")
+            throw string("Recursivitat Llista");
+    }
+    //Print
+    cout << node->getKey() << ": "; //Key
+    printVector(node->getValues()); // Ocurrencies
+    cout << endl;
+    fets++;
+
+    if (node->right() != nullptr)
+        print40_rec(fets, node->right());
 }
 
 
@@ -99,7 +131,7 @@ void WordIndexer::insertWord(const std::string &word, const int &line, const int
 }
 
 /* Metodes auxiliars*/
-void WordIndexer:: print (const vector<Tuple<int>>& llista){
+void WordIndexer:: printVector (const vector<Tuple<int>>& llista){
     if (llista.empty()){
         cout << "[]";
         return;

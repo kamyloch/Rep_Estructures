@@ -180,7 +180,7 @@ void  BalancedTree <Key, Value> :: rotar_right(Position<Key, Value>* c){
     if (c == nullptr || c ->left() == nullptr)
         throw runtime_error("No es pot rotar dreta");
 
-    Position<Key,Value>* b = c->left();
+   Position<Key,Value>* b = c->left();
 
     // c.parent <-> b
     if (!c->isRoot()){

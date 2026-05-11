@@ -19,11 +19,11 @@ class WordIndexer {
         int size() const;
         int height() const;
         bool contains(const std::string &word) const;
-        const Position<string, Tuple<int>>* getRoot() const;
 
         /* Prints */
         void printOccurrences(const std::string &word) const;
         void printDictionary(Position<string, Tuple<int>> *node = nullptr) const;
+        void print40() const;
     protected:
         BinaryTree<string, Tuple<int>> *tree;
 
@@ -32,7 +32,8 @@ class WordIndexer {
 
     private:
         void insertWord(const std::string &word, const int &line, const int &position);
-        static void print (const vector<Tuple<int>>&);
+        static void printVector (const vector<Tuple<int>>&);
+        void print40_rec(int&,const Position<string, Tuple<int>> *node) const;
 
         /* Metodes auxiliars */
         static string trim(const string& cad);
