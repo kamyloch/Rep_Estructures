@@ -100,38 +100,6 @@ void BalancedTree<Key, Value>:: balancejar(Position<Key, Value>* node){
     }
 }
 
-    //h.dret - h.esquerra 
-    /*  Esquerra
-        a                   
-         \                  b     
-          b     --->      /  \
-         / \             a    c
-            c             \
-    */
-    /*  Dreta
-            c      
-           /                b     
-          b     --->      /  \
-         / \             a    c
-        a                    /
-    */
-    /*  Dreta-Esquerra
-        a              a 
-         \              \                   b     
-          c     --->    b       --->      /  \
-         /               \               a    c
-        b                 c                                       
-                     
-    */
-    /*  Esquerra-Dreta
-         c               c  
-       /                /                  b     
-      a        --->    b       --->      /  \
-       \              /                 a    c
-        b            a                 
-    */
-
-
 template <class Key, class Value>
 void BalancedTree <Key, Value> :: rotar_left(Position<Key, Value>* a){
     /*  Esquerra
@@ -146,6 +114,8 @@ void BalancedTree <Key, Value> :: rotar_left(Position<Key, Value>* a){
 
     Position<Key,Value>* b = a->right();
 
+    //cout<< " --- Abans de rotar_left sobre :" << a->getKey() << " --- " << endl;
+    //this->print();
     // a.parent <-> b
     if (!a->isRoot()){
         if (a->parent()->right() == a) //Si a es fill dret
@@ -157,12 +127,14 @@ void BalancedTree <Key, Value> :: rotar_left(Position<Key, Value>* a){
         this->root = b; // Si no hi ha pare upd root
     b->setParent(a->parent());
 
-    a->setRight(b->left()); //Guardem la esquerra de b a la dreta d'a si hi ha
+    //Guardem la esquerra de b a la dreta d'a si hi ha
+    a->setRight(b->left());
+    if(b->left() != nullptr)
+        b->left()->setParent(a);
 
     // b <-> a
     a->setParent(b);
     b->setLeft(a);
-
 
     //Uptade height
     upd_height(a);
@@ -182,6 +154,9 @@ void  BalancedTree <Key, Value> :: rotar_right(Position<Key, Value>* c){
 
    Position<Key,Value>* b = c->left();
 
+    //cout<< " --- Abans de rotar_right sobre :" << c->getKey() << " --- " << endl;
+    //this->print();
+
     // c.parent <-> b
     if (!c->isRoot()){
         if (c->parent()->right() == c) //Si c es fill dret
@@ -193,7 +168,10 @@ void  BalancedTree <Key, Value> :: rotar_right(Position<Key, Value>* c){
         this->root = b; // Si no hi ha pare upd root
     b->setParent(c->parent());
 
-    c->setLeft(nullptr);//Guardem la dreta de b a la esquerra de c si hi ha
+    //Guardem la dreta de b a la esquerra de c si hi ha
+    c->setLeft(b->right());
+    if(b->right() != nullptr)
+        b->right()->setParent(c);
 
     // b <-> c
     c->setParent(b);

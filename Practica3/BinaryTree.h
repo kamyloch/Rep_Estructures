@@ -63,7 +63,6 @@ class BinaryTree {
         /* Recursivitats */
         Position<Key, Value>* search_rec (Position<Key, Value>*, Key) const;
         void getLeaves_rec (vector<Key>&, const Position<Key, Value>*) const;
-        int height_rec (const Position<Key, Value>*) const;
         void copy_rec (const Position<Key, Value>&, Position<Key, Value>*);
         bool identical_rec (const Position<Key, Value>*,const Position<Key, Value>*) const;
 
@@ -166,7 +165,7 @@ bool BinaryTree<Key, Value>::isEmpty() const{
 template <class Key, class Value>
 int BinaryTree<Key, Value>::height() const { //Recursivament
     if (isEmpty()) throw out_of_range("L'abre está buid");
-    return height_rec(root);
+    return root->height();
 }
 template <class Key, class Value>
 bool BinaryTree<Key, Value>::contains(const Key& key) const{ //Iterativament
@@ -281,16 +280,6 @@ void BinaryTree<Key, Value>:: getLeaves_rec (vector<Key>& lista, const Position<
     if(node->right() != nullptr)
         getLeaves_rec(lista,node->right());
     return;
-}
-template <class Key, class Value>
-int BinaryTree<Key, Value>:: height_rec (const Position<Key, Value>* node) const{
-    if(node->isLeaf())
-        return 1;
-    int hIzq = node->left()  == nullptr? 0 : height_rec(node->left()) ;
-    int hDer = node->right() == nullptr? 0 : height_rec(node->right());
-    if (hIzq > hDer)
-        return hIzq+1;
-    return hDer+1;
 }
 
 
