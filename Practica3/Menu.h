@@ -30,6 +30,7 @@ class Menu{
         static int demanaInt(string missatge = "Digues n ∈ ℤ");// Fa while
         static char demanaSN(string missatge = "Digues" , char s = 's',char n = 'n') ; //Fa while
         static string demanaStr(string missatge = "Digues"); //Mai falla
+        static void printVector (const vector<int>& llista);
 
     private:
         string rang;// Mostra interval de la forma [min-max] per informar
@@ -120,5 +121,20 @@ string Menu:: demanaStr(string missatge){
     string usuari;
     getline(cin,usuari);
     return usuari;
+}
+void Menu::printVector (const vector<int>& llista){
+    if (llista.empty()){
+        cout << "[]";
+        return;
+    }
+    
+    cout << "[";
+    auto itr = llista.begin();
+    for(; itr != llista.end()-1; ++itr)
+        cout << *itr << ", ";
+    
+    itr = llista.end()-1;
+
+    cout << *itr << "]";
 }
 #endif

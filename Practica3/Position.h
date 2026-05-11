@@ -10,29 +10,30 @@ class Position {
         virtual ~Position();
 
         /* Modificadors */
-        void setLeft(Position<Key,Value>*);
-        void setRight(Position<Key,Value>*);
-        void setParent(Position<Key,Value>*);
-        void setHeight(int);
+        void setLeft(Position<Key,Value>*);//O(1)
+        void setRight(Position<Key,Value>*);//O(1)
+        void setParent(Position<Key,Value>*);//O(1)
+        void setHeight(int);//O(1)
 
         /* Consultors */
-        const Key& getKey() const;
-        const std:: vector<Value>& getValues() const;
-        int height() const;
-        Position<Key,Value>* left() const;
-        Position<Key,Value>* right() const;
-        Position<Key,Value>* parent() const;
+        const Key& getKey() const;//O(1)
+        const std:: vector<Value>& getValues() const;//O(1)
+        int getHeight() const;//O(1)
+        Position<Key,Value>* left() const;//O(1)
+        Position<Key,Value>* right() const;//O(1)
+        Position<Key,Value>* parent() const;//O(1)
 
         /* Operacions */
-        bool isRoot() const;
-        bool isLeaf() const;
+        bool isRoot() const;//O(1)
+        bool isLeaf() const;//O(1)
+        int height() const; //O(logn) millor, O(n) pitjor
 
         /* n = numero de nodes a l'abre
         El cost es en el pijor dels casos O(n) si l'abre es lineal i el node actual es fulla
         Però donat un arbre aleatori si es suposa que es perfecte llavoros es O(logn) */
         int depth() const;
-        void addValue(const Value& value);
-        bool operator==(const Position<Key, Value>& other) const;
+        void addValue(const Value& value);//O(1)
+        bool operator==(const Position<Key, Value>& other) const;//O(1)
 
         /* Extra */
         /* n = numero de nodes a l'abre
@@ -103,6 +104,8 @@ template <class Key, class Value>
 Position<Key,Value>* Position<Key, Value>::right() const{ return dreta;}
 template <class Key, class Value>
 Position<Key,Value>* Position<Key, Value>::parent() const{ return pare;}
+template <class Key, class Value>
+int Position<Key, Value>:: getHeight() const{return alcada;}
 
 /* Operacions */
 template <class Key, class Value>
@@ -117,7 +120,14 @@ int Position<Key, Value>:: depth() const{
 }
 template <class Key, class Value>
 int Position<Key, Value>:: height() const{
-    return alcada;
+    if (isLeaf())
+        return 1;
+    int hIzq = left()  == nullptr? 0 : left() ->height();
+    int hDer = right() == nullptr? 0 : right()->height();
+    if (hIzq < hDer)
+        return hDer+1;
+    return hIzq+1;
+
 }
 template <class Key, class Value>
 bool Position<Key, Value>:: operator==(const Position<Key, Value>& other) const{

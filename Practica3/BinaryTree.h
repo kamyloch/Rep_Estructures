@@ -343,7 +343,7 @@ void BinaryTree<Key, Value>:: print() const{
         
         //Sino agafem la key del node i la imprimeix
         else
-            cout << center(convert_str(top->getKey()) + to_string(top->height()),amplada);
+            cout << center(convert_str(top->getKey()) + to_string(top->getHeight()),amplada);
     
         //Treiem l'imprès
         cua.pop();

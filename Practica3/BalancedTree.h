@@ -41,8 +41,8 @@ template <class Key, class Value>
 void BalancedTree<Key, Value>::upd_height(Position<Key, Value>* node){
     if(node == nullptr) return;
 
-    int hLeft  = node->left()  == nullptr? 0 : node->left()-> height();
-    int hRight = node->right() == nullptr? 0 : node->right()->height();
+    int hLeft  = node->left()  == nullptr? 0 : node->left()-> getHeight();
+    int hRight = node->right() == nullptr? 0 : node->right()->getHeight();
 
     node->setHeight((hLeft < hRight)? hRight+1: hLeft+1);
 }
@@ -74,9 +74,9 @@ void BalancedTree<Key, Value>:: balancejar(Position<Key, Value>* node){
     int hLeft = 0, hRight = 0;
 
     if(avi->left() != 0)
-        hLeft = avi->left()->height();
+        hLeft = avi->left()->getHeight();
     if(avi->right() != 0)
-        hRight = avi->right()->height();
+        hRight = avi->right()->getHeight();
     
     int diferencia = hRight - hLeft;
 
