@@ -298,7 +298,7 @@ void interactiuBalanced (){
             cout << " Només Integers! (-1 per tancar)"<< endl;
         }
         else if (nou != -1)
-            arbre.insert(nou,1);
+            arbre.insert(nou,0);
         arbre.print();
     }
 }
@@ -316,7 +316,7 @@ void interactiuNormal (){
             cout << " Només Integers! (-1 per tancar)"<< endl;
         }
         else if (nou != -1)
-            arbre.insert(nou,1);
+            arbre.insert(nou,0);
         arbre.print();
     }
 }
@@ -358,11 +358,5 @@ int main(){
     interactiuNormal(); //8 9 10 2 1 5 3 6 4
     interactiuBalanced();
     */
-   mainEx1();
-    mainEx2();
-    mainEx3();
-    mainEx4();
-    mainEx5();
-   interactiuBalanced();
-    
+    interactiuBalanced();
 }

@@ -55,7 +55,7 @@ Position<Key, Value>* BalancedTree<Key, Value>:: insert(const Key& key, const Va
     Position<Key, Value>* itr = nou;
     
     //Balancejem
-    while(itr != nullptr  && !itr->isRoot()){
+    while(itr != nullptr){
         upd_height(itr->parent());
         balancejar(itr);
         itr = itr->parent();
@@ -93,7 +93,7 @@ void BalancedTree<Key, Value>:: balancejar(Position<Key, Value>* node){
             if (pare->left() == node) 
                 rotar_right(avi);
             else
-                rotar_leftRight(avi);
+                rotar_leftRight(avi); //Doble
             break;
             }
         

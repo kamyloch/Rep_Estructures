@@ -335,6 +335,7 @@ void BinaryTree<Key, Value>:: print() const{
         else
             //cout << center(convert_str(top->getKey()) +"-" + to_string(top->getHeight()),amplada);
             cout << center(convert_str(top->getKey()), amplada);
+          
     
         //Treiem l'imprès
         cua.pop();
