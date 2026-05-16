@@ -6,6 +6,26 @@
 #include <chrono>     //Per mesura (Ex5)
 #include <functional> //Per mesura (Ex5)
 
+/*            +------------------- Taula de Comparatives ------------------------+
+            
+    N               |      Short       |      Large       |    Unbalanced     
+    o     ----------|------------------|------------------|------------------
+    r      Inserció |     0.001298s    |    0.027011s     |    0.899341s
+    m     ----------|------------------|------------------|------------------
+    a       Cerca   |     0.126189s    |    0.218984s     |    50.565003s
+    l     ----------|------------------|------------------|------------------
+            Alçada  |        16        |       33         |       9849
+    ==============================================================================
+    B     Inserció  |    0.001998s     |    0.066982s     |     0.033189 
+    a     ----------|------------------|------------------|------------------
+    l       Cerca   |    0.168843s     |    0.242886s     |    0.255008 s
+    a     ----------|------------------|------------------|------------------
+    n       Alçada  |        9         |        17        |        14
+    c
+    e
+    d
+*/
+
 void llegirDictionary(WordIndexer* wordId){ //Per Menu (Ex 2,4) i prova de temps (Ex 5)
     ifstream dades ("dictionary.txt");
     if (!dades.is_open())                    
@@ -222,7 +242,7 @@ void mainEx4(){
     } while (user != 6);
 }
 
-void mesurar(string nombre, function<void()> func) { //Amb l'ajuda de Gemini
+void mesurar(string nombre, function<void()> func) { //Amb l'ajuda de Gemini fem una funció lambda com a parametre per testejar-la
     auto inicio = std::chrono::high_resolution_clock::now();
     
     func(); 
@@ -239,39 +259,44 @@ void mainEx5(){
     cout << " - Cas Petit: " << endl;
     mesurar(" · Insersió", [&]() { normal = new WordIndexer("shortText.txt");});
     mesurar(" · Cerca",    [&]() { llegirDictionary(normal);});
+    cout << " · Alçada: " << normal->height()<<endl;
 
     delete normal; normal = nullptr;
 
     cout << endl << " - Cas Large: " << endl;
     mesurar(" · Insersió", [&]() { normal = new WordIndexer("longText.txt");});
     mesurar(" · Cerca",    [&]() { llegirDictionary(normal);});
+    cout << " · Alçada: " << normal->height()<<endl;
 
     delete normal; normal = nullptr;
 
     cout << endl << " - Cas Unbalanced: " << endl;
     mesurar(" · Insersió", [&]() { normal = new WordIndexer("unbalancedText.txt");});
     mesurar(" · Cerca",    [&]() { llegirDictionary(normal);});
+    cout << " · Alçada: " << normal->height()<<endl;
 
     cout << endl << endl << " --- BalancedTree --- " << endl;
     WordIndexerBalanced* balanced;
     cout  << " - Cas Petit: " << endl;
     mesurar(" · Insersió", [&]() { balanced = new WordIndexerBalanced("shortText.txt");});
     mesurar(" · Cerca",    [&]() { llegirDictionary(balanced);});
+    cout << " · Alçada: " << balanced->height()<<endl;
 
     delete balanced; balanced = nullptr;
 
     cout << endl << " - Cas Large: " << endl;
     mesurar(" · Insersió", [&]() { balanced = new WordIndexerBalanced("longText.txt");});
     mesurar(" · Cerca",    [&]() { llegirDictionary(balanced);});
+    cout << " · Alçada: " << balanced->height()<<endl;
 
     delete balanced; balanced = nullptr;
 
     cout << endl << " - Cas Unbalanced: " << endl;
     mesurar(" · Insersió", [&]() { balanced = new WordIndexerBalanced("unbalancedText.txt");});
     mesurar(" · Cerca",    [&]() { llegirDictionary(balanced);});
+    cout << " · Alçada: " << balanced->height()<<endl;
     
 }
-
 
 //Mètodes Personalitzats
 void randomProva(int elements = 10){
@@ -358,5 +383,5 @@ int main(){
     interactiuNormal(); //8 9 10 2 1 5 3 6 4
     interactiuBalanced();
     */
-    interactiuBalanced();
+    mainEx5();
 }

@@ -10,17 +10,17 @@
 class WordIndexer {
     public:
         /* Constructors */
-        WordIndexer();
-        WordIndexer(std::string path);
-        WordIndexer(const WordIndexer& orig);
-        virtual ~WordIndexer();
+        WordIndexer(); //O(1)
+        WordIndexer(std::string path);//O(nlogn) millor, O(n²) pitjor (si arbre lineal) (fa n cops InsertWord)
+        WordIndexer(const WordIndexer& orig);//O(nlogn) millor, O(n²) pitjor (si arbre lineal) (fa n cops InsertWord)
+        virtual ~WordIndexer();//O(n)
 
         /* Consultors */
-        int size() const;
-        int height() const;
-        bool contains(const std::string &word) const;
+        int size() const;//O(1)
+        int height() const;//O(n)
+        bool contains(const std::string &word) const; //O(n) pitjor, O(logn) millor 
 
-        /* Prints */
+        /* Prints */ //O(n) Obviament
         void printOccurrences(const std::string &word) const;
         void printDictionary(Position<string, Tuple<int>> *node = nullptr) const;
         void print40() const;
@@ -28,14 +28,14 @@ class WordIndexer {
         BinaryTree<string, Tuple<int>> *tree;
 
         /* Modificadors */
-        void addText(std::string path);
+        void addText(std::string path);//O(nlogn) millor, O(n²) pitjor (si arbre lineal) (fa n cops InsertWord on n = #paraulas noves)
 
     private:
-        void insertWord(const std::string &word, const int &line, const int &position);
-        static void printVector (const vector<Tuple<int>>&);
-        void print40_rec(int&,const Position<string, Tuple<int>> *node) const;
+        void insertWord(const std::string &word, const int &line, const int &position);//O(n) pitjor, O(logn) millor
+        void print40_rec(int&,const Position<string, Tuple<int>> *node,bool& ) const;
 
         /* Metodes auxiliars */
         static string trim(const string& cad);
+        static void printVector (const vector<Tuple<int>>&);
 };
 #endif

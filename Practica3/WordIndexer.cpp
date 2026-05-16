@@ -68,21 +68,20 @@ void WordIndexer::print40() const{
     if (this->tree == nullptr)
         throw runtime_error("Arbre no inicialitzat");
     int fets = 0;
-    try{
-        print40_rec(fets,this->tree->getRoot());
-    }catch(string& e){
-        //Recursivitat llista
-    }
+    bool acabat = false; //Bolea per trencar la recursivitat (passat per referència)
+    
+    print40_rec(fets,this->tree->getRoot(), acabat);
 
 }
-void WordIndexer::print40_rec(int& fets,const Position<string, Tuple<int>> *node) const{
+void WordIndexer::print40_rec(int& fets,const Position<string, Tuple<int>> *node, bool& acabat) const{
+    if (acabat) return;
     
     //Inordre
     if (node -> left() != nullptr)
-        print40_rec(fets, node->left());
+        print40_rec(fets, node->left(),acabat);
 
     //Pregunta
-    if (fets !=0 && fets%40 == 0){
+    if (!acabat && fets !=0 && fets%40 == 0){
         //Demana
         string eleccio = "";
         while (eleccio != "n" && eleccio != "s"){
@@ -91,16 +90,19 @@ void WordIndexer::print40_rec(int& fets,const Position<string, Tuple<int>> *node
         }
         //Tanca
         if (eleccio == "n")
-            throw string("Recursivitat Llista");
+            acabat = true;
     }
     //Print
-    cout << node->getKey() << ": "; //Key
-    printVector(node->getValues()); // Ocurrencies
-    cout << endl;
-    fets++;
+    if (!acabat){
+        cout << node->getKey() << ": "; //Key
+        printVector(node->getValues()); // Ocurrencies
+        cout << endl;
+        fets++;
+    }
+    else return;
 
     if (node->right() != nullptr)
-        print40_rec(fets, node->right());
+        print40_rec(fets, node->right(),acabat);
 }
 
 
@@ -146,7 +148,7 @@ void WordIndexer:: printVector (const vector<Tuple<int>>& llista){
 
     cout << itr->str() << "]";
 }
-string WordIndexer:: trim(const string& cad){
+string WordIndexer:: trim(const string& cad){ //Retorna cadena amb nomes les lletres i com a lower ("Hola123" → "hola")
     string sortida = "";
     for (char c : cad)
         if (isalpha(c))

@@ -6,55 +6,46 @@
 #include <vector>
 #include "Position.h"
 
-//Para el print
-#include <cmath>
-#include <queue>
-#include <sstream>
+//Para el print (treball extra)
+#include <cmath> //Fer pow()
+#include <queue> //Recorregut per amplada
+#include <sstream> //Print de keys amb l'operador <<
 
 using namespace std;
 
 template <class Key, class Value>
 class BinaryTree {
     public:
-        BinaryTree();
-        BinaryTree(const BinaryTree<Key, Value>& orig);
-        virtual ~BinaryTree();
+        BinaryTree(); //O(1)
+        BinaryTree(const BinaryTree<Key, Value>& orig);//O(n)
+        virtual ~BinaryTree();//O(1)
 
         /* Modificadors */
-        virtual Position<Key, Value>* insert(const Key& key, const Value& value); //O(log n)
+        virtual Position<Key, Value>* insert(const Key& key, const Value& value); //O(log n) si es fa perfecte, O(n) en le pitjor cas (arbre lineal)
 
         /* Consultors */
-        Position<Key, Value>* getRoot() const;
-        const vector<Value>& getValues(const Key& key) const;
-        int size() const;
-        Position<Key, Value>* search (Key) const; //O(log n)
+        Position<Key, Value>* getRoot() const;//O(1)
+        const vector<Value>& getValues(const Key& key) const;//O(1)
+        int size() const;//O(1)
+        Position<Key, Value>* search (Key) const;  //O(log n) si es fa perfecte, O(n) en le pitjor cas (arbre lineal)
 
         /* Operacions */
         bool isEmpty() const; //O(1)
-        int height() const; //O(n)
-        bool contains(const Key& key) const; // O(log n)
-        vector<Key> getLeaves () const;
+        int height() const; //O(n) es recursiva i visita cada branca desde l'arrell
+        bool contains(const Key& key) const;  //O(log n) si es fa perfecte, O(n) en le pitjor cas (arbre lineal)
+        vector<Key> getLeaves () const;//O(n) visita cada branca fin arribar a les fulles
         
-        /* Prints */
-        //Complexitat O(n)
-        void printPreOrder(const Position<Key, Value> *node = nullptr) const;
-        void printPostOrder(const Position<Key, Value> *node = nullptr) const;
-        bool identicalTree(const BinaryTree<Key, Value>& other) const;
+        /* Prints */ //Obviament son O(n)
+        void printPreOrder(const Position<Key, Value> *node = nullptr) const;//O(n)
+        void printPostOrder(const Position<Key, Value> *node = nullptr) const;//O(n)
+        bool identicalTree(const BinaryTree<Key, Value>& other) const;//O(n)
 
 
-        //Extra
-        /*
-        Completa a un arbre perfecte llavors la complexitat es O(2^n) si es una arbre lineal
-        Sino llavors es O(n) si ja es un arbre perfecte
-
-        Si es true imprime l'abre completat a perfecte amb nodes buits
-        4 es l'espai maxim es per imprimir els nodes mes petits
-        Cada nivell desde l'ultim te el doble d'espai que l'anterior
-        */
-        void print() const;
-        void mirror();
-        int countLeaves() const;
-        void clear();
+        /* Extra (Com repte) */
+        void print() const; //O(n) en el millor cas si es perfecte, O(2^n) si es lineal ja que l'abre es completa com si fos perfecte al fer print
+        void mirror(); //O(n) cada node intercanvia el fills
+        int countLeaves() const; //O(n) visita cada branca fin arribar a les fulles
+        void clear(); //O(n) alliura la memòria de tots el nodes
     protected:
         Position<Key, Value>* root;
 
@@ -67,7 +58,7 @@ class BinaryTree {
         bool identical_rec (const Position<Key, Value>*,const Position<Key, Value>*) const;
 
 
-        //Per imprimir l'abre
+        //Auxiliars per imprimir l'abre
         static string center(string cad,  int n);
         static string convert_str(const Key& value);
 };
@@ -285,13 +276,44 @@ void BinaryTree<Key, Value>:: getLeaves_rec (vector<Key>& lista, const Position<
 
 /* Extra */
 template <class Key, class Value>
-string BinaryTree<Key, Value>:: convert_str(const Key& value){
+void BinaryTree<Key, Value>::mirror(){
+    if (!isEmpty())
+        getRoot()->mirror();
+}
+template <class Key, class Value>
+int BinaryTree<Key, Value>::countLeaves() const{
+    if (isEmpty()) throw out_of_range("Arbre buit");
+
+    return getRoot()->countLeaves();
+}
+template <class Key, class Value>
+void BinaryTree<Key, Value>::clear() {
+    if (isEmpty()) return;
+    delete getRoot();
+    _size = 0;
+}
+
+/* Print Arbre */
+template <class Key, class Value>
+string BinaryTree<Key, Value>:: convert_str(const Key& value){ //Fa que es pugin imprimir totes les keys amb l'operador <<
     stringstream ss;
     ss << value;
     return ss.str();
 }
 template <class Key, class Value>
-void BinaryTree<Key, Value>:: print() const{
+string BinaryTree<Key, Value>:: center(string cad,int n) { // Retorna "cad" centrar en n espais (si no hi cap, es talla)
+    if (n == 0) return "";
+    int espacio = n - cad.size();
+    if (espacio == 0) return cad;
+    if (espacio < 0) return cad.substr(0, n-1) + "-";
+
+    int izq = espacio/2;
+    int der = espacio - izq;
+
+    return string(izq,' ') + cad + string(der,' ');
+}
+template <class Key, class Value>
+void BinaryTree<Key, Value>:: print() const{ //Fa serivir una cua i recorregut per amplada
     if(isEmpty()){ 
         cout<< " --- Arbre buit ---" << endl;
         return;
@@ -394,35 +416,6 @@ void BinaryTree<Key, Value>:: print() const{
             nivell++;
         }
     }
-}
-template <class Key, class Value>
-string BinaryTree<Key, Value>:: center(string cad,int n) {
-    if (n == 0) return "";
-    int espacio = n - cad.size();
-    if (espacio == 0) return cad;
-    if (espacio < 0) return cad.substr(0, n-1) + "-";
-
-    int izq = espacio/2;
-    int der = espacio - izq;
-
-    return string(izq,' ') + cad + string(der,' ');
-}
-template <class Key, class Value>
-void BinaryTree<Key, Value>::mirror(){
-    if (!isEmpty())
-        getRoot()->mirror();
-}
-template <class Key, class Value>
-int BinaryTree<Key, Value>::countLeaves() const{
-    if (isEmpty()) throw out_of_range("Arbre buit");
-
-    return getRoot()->countLeaves();
-}
-template <class Key, class Value>
-void BinaryTree<Key, Value>::clear() {
-    if (isEmpty()) return;
-    delete getRoot();
-    _size = 0;
 }
 
 #endif  

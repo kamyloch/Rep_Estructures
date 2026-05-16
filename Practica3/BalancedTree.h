@@ -1,8 +1,23 @@
+/*
+Expliqueu a BalancedTree.h les similituds i
+diferències en la implementació d’aquest TAD BalancedTree respecte al TAD BinaryTree. Detalleu quin
+és el cost computacional teòric de cadascuna de les operacions del TAD.
+
+Tots els métodes son els mateixos, peró l'únic que canvïa és "insert" que ara fa rotación sobre la branca
+on s'ha fet la cerca binaria, aixo fa que l'arbre estigui equilibrat i la inserció dels nodes futurs sigui
+óptima
+
+El nou cost del insert ara es de O(logn) + O(logn) ja que fem cerca binària en un arbre perfecte (o quasi-perfecte)
+i desprès hem de pujar per la branca fin a fer una rotació que equilibri l'arbre
+
+Nota: Al codi optim hauriem de aturarnos quan fem una rotació al pujar per la branca, ja que aquesta fa que tots
+els pares estiguin equilibrats, peró he fet que el codi pugi fins l'arrer per tenir l'alçada de tots el nodes sempre
+correcta al fet getHeight();
+*/
 #ifndef BALANCED_TREE_H
 #define BALANCED_TREE_H
 #include "Position.h"
 #include "BinaryTree.h"
-#include <algorithm> // Per fer max
 #include <stdexcept>
 
 using namespace std;
@@ -10,19 +25,18 @@ using namespace std;
 template <class Key, class Value>
 class BalancedTree : public BinaryTree<Key, Value> {
     public:
-        BalancedTree();
-        BalancedTree(const BalancedTree<Key, Value>& orig);
-        virtual ~BalancedTree();
-        Position<Key, Value>* insert(const Key& key, const Value& value);
+        BalancedTree();//O(1) assina valors inicials
+        BalancedTree(const BalancedTree<Key, Value>& orig);//O(n) copia cada node
+        virtual ~BalancedTree();//O(n) destrueix cada node
+        Position<Key, Value>* insert(const Key& key, const Value& value); //O(logn), la cerca binària sempre es óptima
 
-        //using BinaryTree<Key, Value>::print; // Para pruebas
-    private:
-        void rotar_left(Position<Key, Value>*);
-        void rotar_right(Position<Key, Value>*);
-        void rotar_leftRight(Position<Key, Value>*);
-        void rotar_rightLeft(Position<Key, Value>*);
-        void upd_height(Position<Key, Value>*);
-        void balancejar(Position<Key, Value>*); //Retorna l'avi balancejat
+    private://Tots són O(1) perquè nomes fan canvis entre els punters de com a molt 3 nodes
+        void rotar_left(Position<Key, Value>*); //O(1)
+        void rotar_right(Position<Key, Value>*);//O(1)
+        void rotar_leftRight(Position<Key, Value>*);//O(1)
+        void rotar_rightLeft(Position<Key, Value>*);//O(1)
+        void upd_height(Position<Key, Value>*);//O(1)
+        void balancejar(Position<Key, Value>*); //O(1)
         
 };
 /*  --------   Definició de Mètodes  --------   */

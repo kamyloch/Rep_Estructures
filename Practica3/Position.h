@@ -5,9 +5,11 @@
 template <class Key, class Value>
 class Position {
     public:
-        Position(const Key key);
-        Position(const Position<Key, Value>& orig);
-        virtual ~Position();
+        Position(const Key key);//O(1) assina valors inicials
+        Position(const Position<Key, Value>& orig);//O(1) la key i alçada del node però no els enllaços
+        virtual ~Position();//O(n) Destrueix el node i tots els seus fills
+
+        //Clarament totes els que son O(1) ho son perque nomes assigna/retorna un punter o valor
 
         /* Modificadors */
         void setLeft(Position<Key,Value>*);//O(1)
@@ -26,21 +28,14 @@ class Position {
         /* Operacions */
         bool isRoot() const;//O(1)
         bool isLeaf() const;//O(1)
-        int height() const; //O(logn) millor, O(n) pitjor
-
-        /* n = numero de nodes a l'abre
-        El cost es en el pijor dels casos O(n) si l'abre es lineal i el node actual es fulla
-        Però donat un arbre aleatori si es suposa que es perfecte llavoros es O(logn) */
-        int depth() const;
+        int height() const; // O(n) on n = # de fills (si n = nodes d'un arbe llavors es O(n))
+        int depth() const;//O(n) on n = # de pares (si n = nodes d'un arbe llavors es O(log(n)) en el millor y O(n) en el pitjor (arbre lineal))
         void addValue(const Value& value);//O(1)
         bool operator==(const Position<Key, Value>& other) const;//O(1)
 
-        /* Extra */
-        /* n = numero de nodes a l'abre
-        El cost es linieal sempre O(n)*/
-        void mirror();
-        int countLeaves() const;
-
+        /* Extra (Com repte) */
+        void mirror(); // O(n) on n = # de fills sota el node
+        int countLeaves() const; // O(n) on n = #fills sota le node, es visita cada branca fin les fulles
     private:
         int alcada;
         Key key;

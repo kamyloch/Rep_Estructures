@@ -5,8 +5,8 @@
 #include <string>
 class WordIndexerBalanced : public WordIndexer {
     public:
-        WordIndexerBalanced(std::string path);
-        WordIndexerBalanced(const WordIndexerBalanced& orig);
-        virtual ~WordIndexerBalanced();
+        WordIndexerBalanced(std::string path); //O(nlogn) perquè sempre está balancejat, llavors fa n cops cercar el lloc (logn) i afegir
+        WordIndexerBalanced(const WordIndexerBalanced& orig);//Amb n = #nodes_nous O(nlogn) perquè sempre está balancejat, llavors fa n cops cercar el lloc (logn) i afegir
+        virtual ~WordIndexerBalanced();//O(n) cada node es destrueix
 };
 #endif
